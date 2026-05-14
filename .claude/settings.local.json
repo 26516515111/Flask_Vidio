@@ -1,0 +1,33 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm run *)",
+      "Bash(kill %1)",
+      "Bash(curl -s -X POST https://token-plan-cn.xiaomimimo.com/v1/chat/completions -H 'api-key: tp-cbxda5xffclg1q8xzl72kd9ir7tr9mlce4bbtvhh5on3sbo8' -H 'Content-Type: application/json' -d '{\"model\":\"mimo-v2.5-tts\",\"messages\":[{\"role\":\"user\",\"content\":\"test\"},{\"role\":\"assistant\",\"content\":\"hello\"}],\"audio\":{\"format\":\"wav\",\"voice\":\"mimo_default\"}}' -w '\\\\nHTTP_CODE:%{http_code}')",
+      "Bash(timeout 15 npx vercel dev --listen 3456)",
+      "Bash(curl -s -X POST http://localhost:3456/api/tts -H \"Content-Type: application/json\" -d '{\"text\":\"hello\",\"voice\":\"mimo_default\",\"emotion\":\"neutral\"}' -w \"\\\\nHTTP_CODE:%{http_code}\")",
+      "Bash(npx vercel *)",
+      "Bash(curl -s -X POST http://localhost:3457/api/tts -H \"Content-Type: application/json\" -d '{\"text\":\"hello\",\"voice\":\"mimo_default\",\"emotion\":\"neutral\"}' -w \"\\\\nHTTP_CODE:%{http_code}\")",
+      "Bash(curl -s -X POST http://localhost:3458/api/tts -H \"Content-Type: application/json\" -d '{\"text\":\"hello\",\"voice\":\"mimo_default\",\"emotion\":\"neutral\"}' -w \"\\\\nHTTP_CODE:%{http_code}\")",
+      "Bash(npm ls *)",
+      "Bash(npm install *)",
+      "Bash(curl -s -X POST http://localhost:3459/api/tts -H \"Content-Type: application/json\" -d '{\"text\":\"hello\",\"voice\":\"mimo_default\",\"emotion\":\"neutral\"}' -w \"\\\\nHTTP_CODE:%{http_code}\")",
+      "Bash(python3 api_server.py)",
+      "Bash(curl -s -X POST http://127.0.0.1:3001/api/tts -H 'Content-Type: application/json' -d '{\"text\":\"你好\",\"voice\":\"mimo_default\",\"emotion\":\"neutral\"}' -w '\\\\nHTTP_CODE:%{http_code}')",
+      "Bash(curl -s -X POST http://localhost:3000/api/tts -H 'Content-Type: application/json' -d '{\"text\":\"测试\",\"voice\":\"mimo_default\",\"emotion\":\"neutral\"}' -w '\\\\nHTTP_CODE:%{http_code}')",
+      "Bash(pkill -f \"api_server.py\")",
+      "Bash(pkill -f \"vite\")",
+      "Bash(python api_server.py)",
+      "Bash(curl -s -X POST http://127.0.0.1:3001/api/tts -H 'Content-Type: application/json' -d '{\"text\":\"test\",\"voice\":\"mimo_default\",\"emotion\":\"neutral\"}' -w '\\\\nHTTP_CODE:%{http_code}')",
+      "Bash(pkill -f \"node.*vite\")",
+      "Bash(fuser -k 3000/tcp)",
+      "Bash(fuser -k 3001/tcp)",
+      "Bash(fuser -k 3002/tcp)",
+      "Bash(curl -s -X POST http://localhost:3000/api/tts -H 'Content-Type: application/json' -d '{\"text\":\"你好世界\",\"voice\":\"mimo_default\",\"emotion\":\"neutral\"}' -w '\\\\nHTTP_CODE:%{http_code}')",
+      "Bash(pkill -9 -f \"api_server\")",
+      "Bash(pkill -9 -f \"vite\")",
+      "Bash(pkill -9 -f \"node\")",
+      "Bash(fuser 3000/tcp 3001/tcp 3002/tcp 3003/tcp)"
+    ]
+  }
+}

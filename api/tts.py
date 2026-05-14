@@ -6,7 +6,7 @@ import httpx
 
 
 def handler(request):
-    """Handle POST /api/tts requests."""
+    """Handle POST /api/tts requests (used by api/app.py Flask wrapper)."""
     if request.method != "POST":
         return {"statusCode": 405, "body": json.dumps({"error": "Method not allowed"})}
 
@@ -108,7 +108,7 @@ def _call_xiaomi_tts(
         audio_config["voice"] = voice_for_audio
 
     # Call API
-    with httpx.Client(timeout=180.0) as client:
+    with httpx.Client(timeout=50.0) as client:
         response = client.post(
             url,
             headers={

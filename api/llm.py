@@ -120,7 +120,7 @@ OCR内容：会议室，投影仪，白板上写满了笔记
 
 
 def handler(request):
-    """Handle POST /api/llm requests."""
+    """Handle POST /api/llm requests (used by api/app.py Flask wrapper)."""
     if request.method != "POST":
         return {"statusCode": 405, "body": json.dumps({"error": "Method not allowed"})}
 
@@ -155,7 +155,7 @@ def _call_llm(system_prompt: str, user_prompt: str, api_key: str, base_url: str)
     """Call Xiaomi LLM API."""
     url = f"{base_url}/chat/completions"
 
-    with httpx.Client(timeout=180.0) as client:
+    with httpx.Client(timeout=50.0) as client:
         response = client.post(
             url,
             headers={

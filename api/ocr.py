@@ -6,7 +6,7 @@ import httpx
 
 
 def handler(request):
-    """Handle POST /api/ocr requests."""
+    """Handle POST /api/ocr requests (used by api/app.py Flask wrapper)."""
     if request.method != "POST":
         return {"statusCode": 405, "body": json.dumps({"error": "Method not allowed"})}
 

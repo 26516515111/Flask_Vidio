@@ -1,9 +1,25 @@
 {
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "version": 3,
   "buildCommand": "npm run build",
   "outputDirectory": "dist",
   "framework": "vite",
   "rewrites": [
-    { "source": "/api/(.*)", "destination": "/api/$1" },
+    { "source": "/api/(.*)", "destination": "/api/app" },
     { "source": "/(.*)", "destination": "/index.html" }
+  ],
+  "functions": {
+    "api/app.py": {
+      "memory": 512,
+      "maxDuration": 60
+    }
+  },
+  "headers": [
+    {
+      "source": "/assets/(.*)",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }
+      ]
+    }
   ]
 }
