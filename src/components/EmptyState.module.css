@@ -1,0 +1,155 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100%;
+  padding: var(--spacing-2xl) var(--spacing-lg) var(--spacing-3xl);
+  text-align: center;
+  animation: fadeIn var(--transition-slow) ease-out;
+  position: relative;
+}
+
+.brandMark {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 72px;
+  height: 72px;
+  border-radius: var(--radius-xl);
+  background: linear-gradient(135deg, var(--color-accent), #1e40af);
+  color: #ffffff;
+  font-size: 32px;
+  margin-bottom: var(--spacing-xl);
+  box-shadow: 0 8px 32px var(--color-accent-glow);
+  animation: bounceIn 600ms ease-out both;
+}
+
+.title {
+  font-size: 30px;
+  font-weight: 700;
+  color: var(--color-text-primary);
+  margin-bottom: var(--spacing-sm);
+  letter-spacing: -0.02em;
+  animation: fadeInUp 600ms ease-out 100ms both;
+}
+
+.subtitle {
+  font-size: 15px;
+  color: var(--color-text-secondary);
+  max-width: 420px;
+  line-height: 1.65;
+  margin-bottom: var(--spacing-xl);
+  animation: fadeInUp 600ms ease-out 200ms both;
+}
+
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: var(--spacing-sm);
+  max-width: 560px;
+  width: 100%;
+  animation: fadeInUp 600ms ease-out 300ms both;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-lg) var(--spacing-sm);
+  background: var(--color-bg-secondary);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all var(--transition-normal);
+}
+
+.card:hover {
+  border-color: var(--color-accent);
+  background: var(--color-accent-muted);
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+}
+
+.cardIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-sm);
+  background: var(--color-accent-muted);
+  color: var(--color-accent);
+  font-size: 18px;
+  transition: all var(--transition-normal);
+}
+
+.card:hover .cardIcon {
+  background: var(--color-accent);
+  color: #ffffff;
+  transform: scale(1.05);
+}
+
+.cardLabel {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--color-text-secondary);
+  transition: color var(--transition-fast);
+}
+
+.card:hover .cardLabel {
+  color: var(--color-accent);
+}
+
+/* Hint text */
+.hint {
+  margin-top: var(--spacing-xl);
+  font-size: 12px;
+  color: var(--color-text-tertiary);
+  animation: fadeInUp 600ms ease-out 500ms both;
+}
+
+.hintKey {
+  display: inline-block;
+  padding: 1px 6px;
+  background: var(--color-bg-tertiary);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xs);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--color-text-secondary);
+  margin: 0 2px;
+}
+
+/* Background subtle pattern */
+.bgPattern {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 600px 400px at 50% 40%, rgba(59, 130, 246, 0.1), transparent),
+    radial-gradient(ellipse 400px 300px at 30% 60%, rgba(37, 99, 235, 0.06), transparent),
+    radial-gradient(ellipse 400px 300px at 70% 30%, rgba(96, 165, 250, 0.04), transparent);
+  pointer-events: none;
+  z-index: -1;
+}
+
+@media (max-width: 768px) {
+  .brandMark {
+    width: 56px;
+    height: 56px;
+    font-size: 24px;
+  }
+
+  .title {
+    font-size: 24px;
+  }
+
+  .subtitle {
+    font-size: 14px;
+  }
+
+  .cards {
+    grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+  }
+}

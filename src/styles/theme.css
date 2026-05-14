@@ -1,0 +1,216 @@
+/* ============================================
+   VOICE ASSISTANT — Design System
+   Refined tech-luxury with deep blue accent
+   ============================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=JetBrains+Mono:wght@400;500&display=swap');
+
+:root {
+  /* ---- Typography ---- */
+  --font-sans: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', 'SF Mono', 'Fira Code', monospace;
+
+  /* ---- Color System: Deep Blue Night ---- */
+  --color-bg-primary: #0a0e1a;
+  --color-bg-secondary: #0f1526;
+  --color-bg-tertiary: #151d33;
+  --color-bg-elevated: #1a2440;
+  --color-bg-hover: #1f2d4d;
+
+  --color-text-primary: #dce6f7;
+  --color-text-secondary: #7b8db5;
+  --color-text-tertiary: #4a5a80;
+  --color-text-inverse: #0a0e1a;
+
+  --color-border: rgba(90, 120, 180, 0.18);
+  --color-border-hover: rgba(90, 120, 180, 0.35);
+
+  /* Primary Accent: Vivid Blue */
+  --color-accent: #3b82f6;
+  --color-accent-hover: #60a5fa;
+  --color-accent-muted: rgba(59, 130, 246, 0.18);
+  --color-accent-glow: rgba(59, 130, 246, 0.3);
+
+  /* Semantic Colors */
+  --color-success: #3fb950;
+  --color-success-muted: rgba(63, 185, 80, 0.15);
+  --color-error: #f85149;
+  --color-error-muted: rgba(248, 81, 73, 0.15);
+  --color-warning: #d29922;
+  --color-warning-muted: rgba(210, 153, 34, 0.15);
+
+  /* ---- Spacing Scale ---- */
+  --spacing-2xs: 2px;
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+  --spacing-xl: 32px;
+  --spacing-2xl: 48px;
+  --spacing-3xl: 64px;
+
+  /* ---- Border Radius ---- */
+  --radius-xs: 4px;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 20px;
+  --radius-full: 9999px;
+
+  /* ---- Shadows ---- */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.5);
+  --shadow-glow: 0 0 20px var(--color-accent-glow);
+
+  /* ---- Layout ---- */
+  --sidebar-width: 280px;
+  --header-height: 56px;
+  --input-area-height: auto;
+  --content-max-width: 800px;
+
+  /* ---- Transitions ---- */
+  --transition-fast: 120ms cubic-bezier(0.25, 0.1, 0.25, 1);
+  --transition-normal: 200ms cubic-bezier(0.25, 0.1, 0.25, 1);
+  --transition-slow: 350ms cubic-bezier(0.25, 0.1, 0.25, 1);
+  --transition-spring: 500ms cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  /* ---- Z-Index Scale ---- */
+  --z-sidebar: 100;
+  --z-header: 200;
+  --z-input: 150;
+  --z-drawer: 300;
+  --z-overlay: 250;
+}
+
+/* ---- Light Theme ---- */
+[data-theme='light'] {
+  --color-bg-primary: #f8faff;
+  --color-bg-secondary: #f0f4ff;
+  --color-bg-tertiary: #e4ebfb;
+  --color-bg-elevated: #ffffff;
+  --color-bg-hover: #dde5f8;
+
+  --color-text-primary: #1f2328;
+  --color-text-secondary: #59636e;
+  --color-text-tertiary: #8b949e;
+  --color-text-inverse: #ffffff;
+
+  --color-border: rgba(59, 130, 246, 0.12);
+  --color-border-hover: rgba(59, 130, 246, 0.25);
+
+  --color-accent: #2563eb;
+  --color-accent-hover: #1d4ed8;
+  --color-accent-muted: rgba(37, 99, 235, 0.1);
+  --color-accent-glow: rgba(37, 99, 235, 0.18);
+
+  --color-success: #1a7f37;
+  --color-success-muted: rgba(26, 127, 55, 0.1);
+  --color-error: #cf222e;
+  --color-error-muted: rgba(207, 34, 46, 0.1);
+  --color-warning: #9a6700;
+  --color-warning-muted: rgba(154, 103, 0, 0.1);
+
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.06);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.12);
+  --shadow-glow: 0 0 20px var(--color-accent-glow);
+}
+
+/* ---- Animations ---- */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+@keyframes wave {
+  0%, 100% { transform: scaleY(0.4); }
+  50% { transform: scaleY(1); }
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes bounceIn {
+  0% { transform: scale(0.9); opacity: 0; }
+  60% { transform: scale(1.02); }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+/* ---- Scrollbar ---- */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(59, 130, 246, 0.35) transparent;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(59, 130, 246, 0.35);
+  border-radius: var(--radius-full);
+  border: 2px solid transparent;
+  background-clip: content-box;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(59, 130, 246, 0.6);
+  border: 2px solid transparent;
+  background-clip: content-box;
+}
+
+/* ---- Selection ---- */
+::selection {
+  background: rgba(59, 130, 246, 0.35);
+  color: #ffffff;
+}
