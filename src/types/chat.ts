@@ -1,8 +1,72 @@
+export interface MusicInfo {
+  detected: boolean;
+  genre?: string;
+  tempo?: string;
+  instruments?: string[];
+  mood?: string;
+}
+
+export interface AudioLayer {
+  type: 'music' | 'dialogue' | 'background' | 'sfx';
+  description: string;
+  start_time?: number;
+  end_time?: number;
+}
+
+export interface DialogueInfo {
+  detected: boolean;
+  speakers?: string[];
+  language?: string;
+  content_summary?: string;
+}
+
+export interface AudioInfo {
+  detected: boolean;
+  music?: MusicInfo;
+  dialogue?: DialogueInfo;
+  layers?: AudioLayer[];
+}
+
+export interface VisualInfo {
+  style?: string;
+  color_tone?: string;
+  camera_movement?: string;
+  lighting?: string;
+  composition?: string;
+}
+
+export interface SceneInfo {
+  description: string;
+  start_time?: number;
+  end_time?: number;
+  mood?: string;
+}
+
+export interface CharacterInfo {
+  role: string;
+  gender: string;
+  age: string;
+  personality: string;
+  voice_hint: string;
+}
+
 export interface MediaAnalysis {
   tags: string[];
   summary: string;
   mediaType: 'video' | 'audio';
   fileName: string;
+  scene?: string;
+  emotion?: string;
+  voice_style?: string;
+  // 音频分析字段（音频和视频共用）
+  music?: MusicInfo;
+  layers?: AudioLayer[];
+  dialogue?: DialogueInfo;
+  // 视频分析特有字段
+  characters?: CharacterInfo[];
+  audio?: AudioInfo;
+  visual?: VisualInfo;
+  scenes?: SceneInfo[];
 }
 
 export interface ChatMessage {

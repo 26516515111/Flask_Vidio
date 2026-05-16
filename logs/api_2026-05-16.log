@@ -30,3 +30,30 @@
 [INFO] 2026-05-16 00:12:24 - logger:51 - API Call: {"endpoint": "/api/video", "timestamp": "2026-05-16T00:12:24.980906", "request": {"url": "https://lsi9tchulfhhv5fp.public.blob.vercel-storage.com/c5758ea2-%E7%9F%AD%E8%A7"}, "response": "{'tags': ['悬疑', '剧集预告', '家庭', '犯罪'], 'summary': '这段视频是剧集《都是她的错》第一季的预告片。故事始于母亲玛丽莎去接儿子迈洛时，却被告知那里没有叫迈洛的人，随后迈洛失踪的消息传出，引发了一场关于孩子失踪真相的悬疑风暴。', 'characters': [{'role': '玛丽莎', 'gender': '女', 'age': '中年', 'personality': '焦虑', 'voice_hint': '清亮女声'}, {'role': '开门女子', 'gender': '女', 'age': '中年', 'personality': '冷漠', 'voice_hint': '平淡女声'}, {'role': '男性角色', 'gender': '男', 'age': '青年', 'personality': '沉稳严肃', 'voice_hint': '低沉男声'}], 'scene': '郊区住宅门口（白天）转场至街道与室内（紧张氛围）', 'emotion': '惊讶 -> 焦虑 -> 恐惧', 'voice_style':", "duration_ms": 11503.436088562012}
 [INFO] 2026-05-16 00:12:24 - video:74 - Video analysis completed in 11503ms, tags=['悬疑', '剧集预告', '家庭', '犯罪']
 [INFO] 2026-05-16 00:12:27 - blob_cleanup:48 - Blob cleaned up: https://lsi9tchulfhhv5fp.public.blob.vercel-storage.com/c5758ea2-%E7%9F%AD%E8%A7...
+[INFO] 2026-05-16 15:12:55 - blob_upload:15 - Blob upload requested, content-type: multipart/form-data; boundary=----WebKitFormBoundaryToQUueWmLexyTWSV
+[INFO] 2026-05-16 15:12:55 - blob_upload:50 - File parsed: 短视频入门教学，快速提升电影感的拍摄技巧-摄影视频-搜狐视频.mp4, size=2001529 bytes
+[INFO] 2026-05-16 15:13:04 - blob_upload:57 - Blob uploaded OK: https://lsi9tchulfhhv5fp.public.blob.vercel-storage.com/f227da52-%E7%9F%AD%E8%A7%86%E9%A2%91%E5%85%A5%E9%97%A8%E6%95%99%E5%AD%A6%EF%BC%8C%E5%BF%AB%E9%80%9F%E6%8F%90%E5%8D%87%E7%94%B5%E5%BD%B1%E6%84%9F%E7%9A%84%E6%8B%8D%E6%91%84%E6%8A%80%E5%B7%A7-%E6%91%84%E5%BD%B1%E8%A7%86%E9%A2%91-%E6%90%9C%E7%8B%90%E8%A7%86%E9%A2%91-XUPuUPsux4CcuhFshvlb4HJSK13heK.mp4
+[INFO] 2026-05-16 15:13:04 - video:108 - Video analysis requested, URL: https://lsi9tchulfhhv5fp.public.blob.vercel-storage.com/f227da52-%E7%9F%AD%E8%A7..., duration=15.4s, fps=2.0, resolution=default
+[DEBUG] 2026-05-16 15:13:24 - video:189 - Xiaomi raw response: ```json
+{
+  "tags": ["悬疑", "剧情", "电视剧", "预告片", "家庭"],
+  "summary": "视频开头，一名女子Marissa来到一栋房子接儿子Milo，却被告知这里没有叫Milo的人。随后镜头切换，显示Milo已经失踪近五个小时，暗示了一场关于儿童失踪和家庭危机的悬疑剧情，视频最后展示了剧名为《都是她的错》。",
+  "characters": [
+  
+[INFO] 2026-05-16 15:13:24 - logger:51 - API Call: {"endpoint": "/api/video", "timestamp": "2026-05-16T15:13:24.114433", "request": {"url": "https://lsi9tchulfhhv5fp.public.blob.vercel-storage.com/f227da52-%E7%9F%AD%E8%A7"}, "response": "{'tags': ['悬疑', '剧情', '电视剧', '预告片', '家庭'], 'summary': '视频开头，一名女子Marissa来到一栋房子接儿子Milo，却被告知这里没有叫Milo的人。随后镜头切换，显示Milo已经失踪近五个小时，暗示了一场关于儿童失踪和家庭危机的悬疑剧情，视频最后展示了剧名为《都是她的错》。', 'characters': [{'role': '主角', 'gender': '女', 'age': '中年', 'personality': '焦虑、困惑', 'voice_hint': '成熟女声'}, {'role': '配角', 'gender': '男', 'age': '中年', 'personality': '严肃、沉重', 'voice_hint': '低沉男声'}], 'scene': '城市住宅区街道及室内，白天，悬疑氛围', 'emotion': '惊讶/恐惧/焦虑', 'voice_style': '沉稳且带有悬疑感的解说风格', 'audio': {'detected': True, 'music': {'detected': T", "duration_ms": 19676.388025283813}
+[INFO] 2026-05-16 15:13:24 - video:126 - Video analysis completed in 19676ms, tags=['悬疑', '剧情', '电视剧', '预告片', '家庭']
+[INFO] 2026-05-16 15:13:26 - blob_cleanup:48 - Blob cleaned up: https://lsi9tchulfhhv5fp.public.blob.vercel-storage.com/f227da52-%E7%9F%AD%E8%A7...
+[INFO] 2026-05-16 15:14:28 - blob_upload:15 - Blob upload requested, content-type: multipart/form-data; boundary=----WebKitFormBoundaryYi2f6b8KBAhzB5q1
+[INFO] 2026-05-16 15:14:28 - blob_upload:50 - File parsed: 任命助理.wav, size=269850 bytes
+[INFO] 2026-05-16 15:14:32 - blob_upload:57 - Blob uploaded OK: https://lsi9tchulfhhv5fp.public.blob.vercel-storage.com/2013f8da-%E4%BB%BB%E5%91%BD%E5%8A%A9%E7%90%86-0yEU7KMdazRd1ytZ8GYkfl4NxbXbMk.wav
+[INFO] 2026-05-16 15:14:32 - audio:67 - Audio analysis requested, URL: https://lsi9tchulfhhv5fp.public.blob.vercel-storage.com/2013f8da-%E4%BB%BB%E5%91...
+[DEBUG] 2026-05-16 15:14:43 - audio:143 - Xiaomi raw response: ```json
+{
+  "tags": ["日语对白", "角色扮演", "问候", "关怀"],
+  "summary": "一位女性角色向被称为“博士”的对象表达工作日结束的问候与感谢，体现出温柔和关怀。",
+  "scene": "场景为傍晚时分的指挥中心或实验室，氛围温馨且略带疲惫后的宁静。",
+  "emotion": "温柔",
+  "voice_style": "温柔、轻声细语，略带
+[INFO] 2026-05-16 15:14:43 - logger:51 - API Call: {"endpoint": "/api/audio", "timestamp": "2026-05-16T15:14:43.051523", "request": {"url": "https://lsi9tchulfhhv5fp.public.blob.vercel-storage.com/2013f8da-%E4%BB%BB%E5%91"}, "response": "{'tags': ['日语对白', '角色扮演', '问候', '关怀'], 'summary': '一位女性角色向被称为“博士”的对象表达工作日结束的问候与感谢，体现出温柔和关怀。', 'scene': '场景为傍晚时分的指挥中心或实验室，氛围温馨且略带疲惫后的宁静。', 'emotion': '温柔', 'voice_style': '温柔、轻声细语，略带恭敬与关怀的少女音', 'music': {'detected': False, 'genre': '', 'tempo': '', 'instruments': [], 'mood': ''}, 'layers': [{'type': 'dialogue', 'description': '一位女性角色用日语进行问候和关怀的对白', 'start_time': 0.0, 'end_time': 5.0}], 'dialogue': {'detected': True, 'speakers': ['女性角色'], 'language': '日语', 'content_summary': '女性角色向‘博士’表示工作辛苦了。'}}", "duration_ms": 10134.170532226562}
+[INFO] 2026-05-16 15:14:43 - audio:82 - Audio analysis completed in 10134ms, tags=['日语对白', '角色扮演', '问候', '关怀']
+[INFO] 2026-05-16 15:14:44 - blob_cleanup:48 - Blob cleaned up: https://lsi9tchulfhhv5fp.public.blob.vercel-storage.com/2013f8da-%E4%BB%BB%E5%91...

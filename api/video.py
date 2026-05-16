@@ -4,21 +4,73 @@ import json
 import os
 import re
 import time
+from typing import Optional
+
 import httpx
 from logger import logger, log_api_call
 from blob_cleanup import delete_blob
 
 
-VIDEO_PROMPT = """分析这个视频。返回JSON：
+VIDEO_PROMPT = """分析这个视频的视觉和音频内容。返回JSON格式：
 {
   "tags": ["标签1", "标签2"],
   "summary": "视频内容简介，50-100字",
   "characters": [{"role": "主角", "gender": "男", "age": "青年", "personality": "沉稳", "voice_hint": "低沉男声"}],
   "scene": "地点+时间+氛围",
   "emotion": "开心/悲伤/愤怒/惊讶/恐惧/厌恶/平静/激动/温柔",
-  "voice_style": "配音风格建议"
+  "voice_style": "配音风格建议",
+  "audio": {
+    "detected": true,
+    "music": {
+      "detected": true,
+      "genre": "流行/摇滚/古典/电子/民谣/说唱等",
+      "tempo": "快/中/慢",
+      "instruments": ["钢琴", "吉他", "鼓"],
+      "mood": "欢快/忧伤/紧张/平静/激昂"
+    },
+    "dialogue": {
+      "detected": true,
+      "speakers": ["说话人1", "说话人2"],
+      "language": "中文/英文/混合",
+      "content_summary": "对话内容摘要"
+    },
+    "layers": [
+      {
+        "type": "music|dialogue|background|sfx",
+        "description": "该音频层的描述",
+        "start_time": 0.0,
+        "end_time": 10.0
+      }
+    ]
+  },
+  "visual": {
+    "style": "电影/动画/纪录片/短视频/广告等",
+    "color_tone": "暖色调/冷色调/高饱和/低饱和/黑白",
+    "camera_movement": "固定/平移/推拉/跟拍/手持",
+    "lighting": "自然光/人工光/逆光/侧光/顶光",
+    "composition": "中心构图/三分法/对称/引导线"
+  },
+  "scenes": [
+    {
+      "description": "场景描述",
+      "start_time": 0.0,
+      "end_time": 10.0,
+      "mood": "场景情绪"
+    }
+  ]
 }
-characters列出说话者，无人物则写旁白。只返回JSON。"""
+
+要求：
+1. tags 是你根据视频内容自动生成的分类标签
+2. summary 是视频内容的简洁描述
+3. characters 列出视频中的角色，无人物则写旁白
+4. scene 描述视频发生的场景
+5. emotion 是视频传达的主要情绪
+6. voice_style 是适合该视频的配音风格建议
+7. audio 描述视频中的音频信息，包括音乐、对话和音频分层
+8. visual 描述视频的视觉风格特征
+9. scenes 列出视频中的不同场景片段
+10. 只返回JSON，不要其他内容"""
 
 
 def handler(request):
@@ -124,7 +176,7 @@ def _call_video_analysis(video_url: str, api_key: str, base_url: str, fps: float
                         ]
                     }
                 ],
-                "max_completion_tokens": 2048,
+                "max_completion_tokens": 4096,
                 "temperature": 0.3,
             },
         )
@@ -150,7 +202,7 @@ def _parse_analysis_json(content: str) -> dict:
     """
     if not content or not content.strip():
         logger.warning("Empty response from model")
-        return {"tags": [], "summary": ""}
+        return {"tags": [], "summary": "", "characters": [], "scene": "", "emotion": "", "voice_style": "", "audio": {"detected": False, "music": {"detected": False, "genre": "", "tempo": "", "instruments": [], "mood": ""}, "dialogue": {"detected": False, "speakers": [], "language": "", "content_summary": ""}, "layers": []}, "visual": {"style": "", "color_tone": "", "camera_movement": "", "lighting": "", "composition": ""}, "scenes": []}
 
     # Step 1: Strip markdown code blocks
     cleaned = content.strip()
@@ -197,11 +249,11 @@ def _parse_analysis_json(content: str) -> dict:
         f"Failed to parse JSON from response, "
         f"returning raw content (first 100 chars): {cleaned[:100]}"
     )
-    return {"tags": [], "summary": cleaned, "characters": [], "scene": "", "emotion": "", "voice_style": ""}
+    return {"tags": [], "summary": cleaned, "characters": [], "scene": "", "emotion": "", "voice_style": "", "audio": {"detected": False, "music": {"detected": False, "genre": "", "tempo": "", "instruments": [], "mood": ""}, "dialogue": {"detected": False, "speakers": [], "language": "", "content_summary": ""}, "layers": []}, "visual": {"style": "", "color_tone": "", "camera_movement": "", "lighting": "", "composition": ""}, "scenes": []}
 
 
 def _extract_result(analysis: dict) -> dict:
-    """Extract tags, summary, characters, scene, emotion, voice_style from parsed dict."""
+    """Extract all fields from parsed analysis dict with normalization."""
     tags = analysis.get("tags", [])
     summary = analysis.get("summary", "")
     characters = analysis.get("characters", [])
@@ -242,4 +294,226 @@ def _extract_result(analysis: dict) -> dict:
         "scene": scene,
         "emotion": emotion,
         "voice_style": voice_style,
+        "audio": _extract_audio_info(analysis.get("audio")),
+        "visual": _extract_visual_info(analysis.get("visual")),
+        "scenes": _extract_scenes(analysis.get("scenes")),
     }
+
+
+def _extract_audio_info(audio: Optional[dict]) -> dict:
+    """Extract and normalize audio info from parsed dict."""
+    default = {
+        "detected": False,
+        "music": _extract_music_info(None),
+        "dialogue": _extract_dialogue_info(None),
+        "layers": [],
+    }
+    if not isinstance(audio, dict):
+        return default
+
+    detected = audio.get("detected", False)
+    if not isinstance(detected, bool):
+        detected = bool(detected) if detected is not None else False
+
+    return {
+        "detected": detected,
+        "music": _extract_music_info(audio.get("music")),
+        "dialogue": _extract_dialogue_info(audio.get("dialogue")),
+        "layers": _extract_layers(audio.get("layers")),
+    }
+
+
+def _extract_music_info(music: Optional[dict]) -> dict:
+    """Extract and normalize music info from parsed dict."""
+    default = {"detected": False, "genre": "", "tempo": "", "instruments": [], "mood": ""}
+    if not isinstance(music, dict):
+        return default
+
+    detected = music.get("detected", False)
+    if not isinstance(detected, bool):
+        detected = bool(detected) if detected is not None else False
+
+    genre = music.get("genre", "")
+    if not isinstance(genre, str):
+        genre = str(genre) if genre else ""
+
+    tempo = music.get("tempo", "")
+    if not isinstance(tempo, str):
+        tempo = str(tempo) if tempo else ""
+
+    instruments = music.get("instruments", [])
+    if isinstance(instruments, str):
+        instruments = [i.strip() for i in instruments.split(",") if i.strip()]
+    if not isinstance(instruments, list):
+        instruments = []
+
+    mood = music.get("mood", "")
+    if not isinstance(mood, str):
+        mood = str(mood) if mood else ""
+
+    return {
+        "detected": detected,
+        "genre": genre,
+        "tempo": tempo,
+        "instruments": instruments,
+        "mood": mood,
+    }
+
+
+def _extract_dialogue_info(dialogue: Optional[dict]) -> dict:
+    """Extract and normalize dialogue info from parsed dict."""
+    default = {"detected": False, "speakers": [], "language": "", "content_summary": ""}
+    if not isinstance(dialogue, dict):
+        return default
+
+    detected = dialogue.get("detected", False)
+    if not isinstance(detected, bool):
+        detected = bool(detected) if detected is not None else False
+
+    speakers = dialogue.get("speakers", [])
+    if isinstance(speakers, str):
+        speakers = [s.strip() for s in speakers.split(",") if s.strip()]
+    if not isinstance(speakers, list):
+        speakers = []
+
+    language = dialogue.get("language", "")
+    if not isinstance(language, str):
+        language = str(language) if language else ""
+
+    content_summary = dialogue.get("content_summary", "")
+    if not isinstance(content_summary, str):
+        content_summary = str(content_summary) if content_summary else ""
+
+    return {
+        "detected": detected,
+        "speakers": speakers,
+        "language": language,
+        "content_summary": content_summary,
+    }
+
+
+def _extract_layers(layers: Optional[list]) -> list:
+    """Extract and normalize audio layers from parsed list."""
+    if not isinstance(layers, list):
+        return []
+
+    result = []
+    valid_types = {"music", "dialogue", "background", "sfx"}
+    for layer in layers:
+        if not isinstance(layer, dict):
+            continue
+        layer_type = layer.get("type", "")
+        if not isinstance(layer_type, str):
+            layer_type = str(layer_type) if layer_type else ""
+        if layer_type and layer_type not in valid_types:
+            layer_type = ""
+
+        description = layer.get("description", "")
+        if not isinstance(description, str):
+            description = str(description) if description else ""
+
+        start_time = layer.get("start_time", 0.0)
+        if not isinstance(start_time, (int, float)):
+            try:
+                start_time = float(start_time)
+            except (ValueError, TypeError):
+                start_time = 0.0
+
+        end_time = layer.get("end_time", 0.0)
+        if not isinstance(end_time, (int, float)):
+            try:
+                end_time = float(end_time)
+            except (ValueError, TypeError):
+                end_time = 0.0
+
+        result.append({
+            "type": layer_type,
+            "description": description,
+            "start_time": start_time,
+            "end_time": end_time,
+        })
+
+    return result
+
+
+def _extract_visual_info(visual: Optional[dict]) -> dict:
+    """Extract and normalize visual info from parsed dict."""
+    default = {
+        "style": "",
+        "color_tone": "",
+        "camera_movement": "",
+        "lighting": "",
+        "composition": "",
+    }
+    if not isinstance(visual, dict):
+        return default
+
+    style = visual.get("style", "")
+    if not isinstance(style, str):
+        style = str(style) if style else ""
+
+    color_tone = visual.get("color_tone", "")
+    if not isinstance(color_tone, str):
+        color_tone = str(color_tone) if color_tone else ""
+
+    camera_movement = visual.get("camera_movement", "")
+    if not isinstance(camera_movement, str):
+        camera_movement = str(camera_movement) if camera_movement else ""
+
+    lighting = visual.get("lighting", "")
+    if not isinstance(lighting, str):
+        lighting = str(lighting) if lighting else ""
+
+    composition = visual.get("composition", "")
+    if not isinstance(composition, str):
+        composition = str(composition) if composition else ""
+
+    return {
+        "style": style,
+        "color_tone": color_tone,
+        "camera_movement": camera_movement,
+        "lighting": lighting,
+        "composition": composition,
+    }
+
+
+def _extract_scenes(scenes: Optional[list]) -> list:
+    """Extract and normalize scene segments from parsed list."""
+    if not isinstance(scenes, list):
+        return []
+
+    result = []
+    for scene in scenes:
+        if not isinstance(scene, dict):
+            continue
+
+        description = scene.get("description", "")
+        if not isinstance(description, str):
+            description = str(description) if description else ""
+
+        start_time = scene.get("start_time", 0.0)
+        if not isinstance(start_time, (int, float)):
+            try:
+                start_time = float(start_time)
+            except (ValueError, TypeError):
+                start_time = 0.0
+
+        end_time = scene.get("end_time", 0.0)
+        if not isinstance(end_time, (int, float)):
+            try:
+                end_time = float(end_time)
+            except (ValueError, TypeError):
+                end_time = 0.0
+
+        mood = scene.get("mood", "")
+        if not isinstance(mood, str):
+            mood = str(mood) if mood else ""
+
+        result.append({
+            "description": description,
+            "start_time": start_time,
+            "end_time": end_time,
+            "mood": mood,
+        })
+
+    return result

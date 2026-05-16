@@ -298,6 +298,18 @@ const SettingsDrawer: React.FC<SettingsDrawerProps> = ({ open, onClose, onConfir
         summary: mediaAnalysisResult.summary,
         mediaType: sceneInputMode as 'video' | 'audio',
         fileName: mediaAnalysisResult.fileName,
+        // 音频分析字段
+        scene: mediaAnalysisResult.scene,
+        emotion: mediaAnalysisResult.emotion,
+        voice_style: mediaAnalysisResult.voice_style,
+        music: mediaAnalysisResult.music,
+        layers: mediaAnalysisResult.layers,
+        dialogue: mediaAnalysisResult.dialogue,
+        // 视频分析字段
+        characters: mediaAnalysisResult.characters,
+        audio: mediaAnalysisResult.audio,
+        visual: mediaAnalysisResult.visual,
+        scenes: mediaAnalysisResult.scenes,
       },
       timestamp: Date.now(),
     };
@@ -468,6 +480,72 @@ const SettingsDrawer: React.FC<SettingsDrawerProps> = ({ open, onClose, onConfir
                   </div>
                 )}
 
+                {/* Audio Info */}
+                {sceneInputMode === 'video' && mediaAnalysisResult.audio?.detected && (
+                  <div style={{ marginBottom: 8, padding: '8px', background: '#f6f6f6', borderRadius: 4 }}>
+                    <div style={{ fontSize: 12, fontWeight: 'bold', marginBottom: 4 }}>🎵 音频信息</div>
+                    {mediaAnalysisResult.audio.music?.detected && (
+                      <div style={{ fontSize: 12, color: '#555', marginBottom: 4 }}>
+                        <div>音乐：{mediaAnalysisResult.audio.music.genre} · {mediaAnalysisResult.audio.music.tempo} · {mediaAnalysisResult.audio.music.mood}</div>
+                        {mediaAnalysisResult.audio.music.instruments && mediaAnalysisResult.audio.music.instruments.length > 0 && (
+                          <div style={{ color: '#888' }}>乐器：{mediaAnalysisResult.audio.music.instruments.join('、')}</div>
+                        )}
+                      </div>
+                    )}
+                    {mediaAnalysisResult.audio.dialogue?.detected && (
+                      <div style={{ fontSize: 12, color: '#555', marginBottom: 4 }}>
+                        <div>对话：{mediaAnalysisResult.audio.dialogue.speakers?.join('、')}</div>
+                        {mediaAnalysisResult.audio.dialogue.language && <span>语言：{mediaAnalysisResult.audio.dialogue.language}</span>}
+                      </div>
+                    )}
+                  </div>
+                )}
+
+                {/* Visual Info */}
+                {sceneInputMode === 'video' && mediaAnalysisResult.visual && (
+                  <div style={{ marginBottom: 8, padding: '8px', background: '#f6f6f6', borderRadius: 4 }}>
+                    <div style={{ fontSize: 12, fontWeight: 'bold', marginBottom: 4 }}>🎬 视觉信息</div>
+                    <div style={{ fontSize: 12, color: '#555' }}>
+                      {mediaAnalysisResult.visual.style && <span>风格：{mediaAnalysisResult.visual.style} </span>}
+                      {mediaAnalysisResult.visual.color_tone && <span>色调：{mediaAnalysisResult.visual.color_tone}</span>}
+                    </div>
+                    <div style={{ fontSize: 12, color: '#555', marginTop: 4 }}>
+                      {mediaAnalysisResult.visual.camera_movement && <span>镜头：{mediaAnalysisResult.visual.camera_movement} </span>}
+                      {mediaAnalysisResult.visual.lighting && <span>光线：{mediaAnalysisResult.visual.lighting}</span>}
+                    </div>
+                    {mediaAnalysisResult.visual.composition && (
+                      <div style={{ fontSize: 12, color: '#888', marginTop: 4 }}>构图：{mediaAnalysisResult.visual.composition}</div>
+                    )}
+                  </div>
+                )}
+
+                {/* Scene Timeline */}
+                {sceneInputMode === 'video' && mediaAnalysisResult.scenes && mediaAnalysisResult.scenes.length > 0 && (
+                  <div style={{ marginBottom: 8, padding: '8px', background: '#f6f6f6', borderRadius: 4 }}>
+                    <div style={{ fontSize: 12, fontWeight: 'bold', marginBottom: 4 }}>🎭 场景分层</div>
+                    {mediaAnalysisResult.scenes.map((scene, i) => (
+                      <div key={i} style={{ fontSize: 12, color: '#555', marginBottom: 4, display: 'flex', alignItems: 'center', gap: 8 }}>
+                        <span style={{
+                          display: 'inline-block',
+                          padding: '2px 6px',
+                          borderRadius: 4,
+                          fontSize: 10,
+                          background: '#e6f7ff',
+                          color: '#1890ff'
+                        }}>
+                          场景 {i + 1}
+                        </span>
+                        <span>{scene.description}</span>
+                        {scene.start_time !== undefined && scene.end_time !== undefined && (
+                          <span style={{ color: '#aaa', marginLeft: 'auto' }}>
+                            {scene.start_time.toFixed(1)}s - {scene.end_time.toFixed(1)}s
+                          </span>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                )}
+
                 {/* Emotion + Voice style */}
                 <div style={{ marginBottom: 6, fontSize: 12 }}>
                   {mediaAnalysisResult.emotion && (
@@ -481,6 +559,76 @@ const SettingsDrawer: React.FC<SettingsDrawerProps> = ({ open, onClose, onConfir
                     </div>
                   )}
                 </div>
+
+                {/* Music Info */}
+                {mediaAnalysisResult.music?.detected && (
+                  <div style={{ marginBottom: 8, padding: '8px', background: '#f6f6f6', borderRadius: 4 }}>
+                    <div style={{ fontSize: 12, fontWeight: 'bold', marginBottom: 4 }}>🎵 音乐信息</div>
+                    <div style={{ fontSize: 12, color: '#555' }}>
+                      {mediaAnalysisResult.music.genre && <span>类型：{mediaAnalysisResult.music.genre} </span>}
+                      {mediaAnalysisResult.music.tempo && <span>节奏：{mediaAnalysisResult.music.tempo} </span>}
+                      {mediaAnalysisResult.music.mood && <span>氛围：{mediaAnalysisResult.music.mood}</span>}
+                    </div>
+                    {mediaAnalysisResult.music.instruments && mediaAnalysisResult.music.instruments.length > 0 && (
+                      <div style={{ fontSize: 12, color: '#888', marginTop: 4 }}>
+                        乐器：{mediaAnalysisResult.music.instruments.join('、')}
+                      </div>
+                    )}
+                  </div>
+                )}
+
+                {/* Dialogue Info */}
+                {mediaAnalysisResult.dialogue?.detected && (
+                  <div style={{ marginBottom: 8, padding: '8px', background: '#f6f6f6', borderRadius: 4 }}>
+                    <div style={{ fontSize: 12, fontWeight: 'bold', marginBottom: 4 }}>💬 对话信息</div>
+                    {mediaAnalysisResult.dialogue.speakers && mediaAnalysisResult.dialogue.speakers.length > 0 && (
+                      <div style={{ fontSize: 12, color: '#555' }}>
+                        说话人：{mediaAnalysisResult.dialogue.speakers.join('、')}
+                      </div>
+                    )}
+                    {mediaAnalysisResult.dialogue.language && (
+                      <div style={{ fontSize: 12, color: '#555' }}>语言：{mediaAnalysisResult.dialogue.language}</div>
+                    )}
+                    {mediaAnalysisResult.dialogue.content_summary && (
+                      <div style={{ fontSize: 12, color: '#888', marginTop: 4 }}>
+                        内容摘要：{mediaAnalysisResult.dialogue.content_summary}
+                      </div>
+                    )}
+                  </div>
+                )}
+
+                {/* Audio Layers */}
+                {mediaAnalysisResult.layers && mediaAnalysisResult.layers.length > 0 && (
+                  <div style={{ marginBottom: 8, padding: '8px', background: '#f6f6f6', borderRadius: 4 }}>
+                    <div style={{ fontSize: 12, fontWeight: 'bold', marginBottom: 4 }}>🎛️ 音频分层</div>
+                    {mediaAnalysisResult.layers.map((layer, i) => (
+                      <div key={i} style={{ fontSize: 12, color: '#555', marginBottom: 4, display: 'flex', alignItems: 'center', gap: 8 }}>
+                        <span style={{
+                          display: 'inline-block',
+                          padding: '2px 6px',
+                          borderRadius: 4,
+                          fontSize: 10,
+                          background: layer.type === 'music' ? '#e6f7ff' :
+                                      layer.type === 'dialogue' ? '#f6ffed' :
+                                      layer.type === 'background' ? '#fff7e6' : '#fff1f0',
+                          color: layer.type === 'music' ? '#1890ff' :
+                                 layer.type === 'dialogue' ? '#52c41a' :
+                                 layer.type === 'background' ? '#fa8c16' : '#f5222d'
+                        }}>
+                          {layer.type === 'music' ? '音乐' :
+                           layer.type === 'dialogue' ? '对话' :
+                           layer.type === 'background' ? '背景' : '音效'}
+                        </span>
+                        <span>{layer.description}</span>
+                        {layer.start_time !== undefined && layer.end_time !== undefined && (
+                          <span style={{ color: '#aaa', marginLeft: 'auto' }}>
+                            {layer.start_time.toFixed(1)}s - {layer.end_time.toFixed(1)}s
+                          </span>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                )}
 
                 <TextArea
                   rows={3}
