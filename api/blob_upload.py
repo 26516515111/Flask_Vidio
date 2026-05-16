@@ -1,8 +1,45 @@
 """Vercel Serverless Function: Upload file to Vercel Blob server-side."""
 import json
 import os
+import mimetypes
 import httpx
 from logger import logger, get_header
+
+
+# Extension → MIME type mapping for media files where mimetypes may not
+# have an entry or browsers may not set file.type.
+_MEDIA_MIME_MAP = {
+    ".mp4": "video/mp4",
+    ".mov": "video/quicktime",
+    ".avi": "video/x-msvideo",
+    ".wmv": "video/x-ms-wmv",
+    ".webm": "video/webm",
+    ".mkv": "video/x-matroska",
+    ".mp3": "audio/mpeg",
+    ".wav": "audio/wav",
+    ".flac": "audio/flac",
+    ".m4a": "audio/mp4",
+    ".ogg": "audio/ogg",
+    ".aac": "audio/aac",
+}
+
+
+def _get_content_type(filename: str) -> str:
+    """Derive Content-Type from file extension.
+    
+    Critical: if blob is uploaded with 'application/octet-stream', downstream
+    APIs (Xiaomi MiMo) cannot recognize it as valid media and return 400.
+    """
+    import os as _os
+    _, ext = _os.path.splitext(filename)
+    ext = ext.lower()
+    if ext in _MEDIA_MIME_MAP:
+        return _MEDIA_MIME_MAP[ext]
+    # Fall back to stdlib mimetypes (handles images, common formats)
+    guessed = mimetypes.guess_type(filename)[0]
+    if guessed:
+        return guessed
+    return "application/octet-stream"
 
 
 def handler(request):
@@ -67,13 +104,15 @@ def _upload_to_blob(filename: str, data: bytes, token: str) -> str:
     """Upload file to Vercel Blob and return public URL."""
     import uuid
     safe_name = f"{uuid.uuid4().hex[:8]}-{filename}"
+    content_type = _get_content_type(filename)
+    logger.info(f"Uploading as Content-Type: {content_type} (from filename: {filename})")
 
     with httpx.Client(timeout=120.0) as client:
         response = client.put(
             f"https://blob.vercel-storage.com/{safe_name}",
             headers={
                 "Authorization": f"Bearer {token}",
-                "Content-Type": "application/octet-stream",
+                "Content-Type": content_type,
             },
             content=data,
         )
