@@ -1,14 +1,14 @@
-"""Application logger - writes to stderr and log file."""
+"""Application logger - writes to stderr and optionally to log file."""
 import os
 import sys
 import json
 import logging
 from datetime import datetime
 
-LOG_DIR = os.environ.get("LOG_DIR", os.path.join(os.path.dirname(__file__), "..", "logs"))
+# Detect Vercel environment (read-only filesystem)
+IS_VERCEL = os.environ.get("VERCEL", "") == "1" or os.environ.get("VERCEL_ENV", "") != ""
 
-# Ensure log directory exists
-os.makedirs(LOG_DIR, exist_ok=True)
+LOG_DIR = os.environ.get("LOG_DIR", os.path.join(os.path.dirname(__file__), "..", "logs"))
 
 # Configure root logger
 logger = logging.getLogger("api")
@@ -23,15 +23,21 @@ console.setFormatter(logging.Formatter(
 ))
 logger.addHandler(console)
 
-# File handler
-log_file = os.path.join(LOG_DIR, f"api_{datetime.now().strftime('%Y-%m-%d')}.log")
-file_handler = logging.FileHandler(log_file, encoding="utf-8")
-file_handler.setLevel(logging.DEBUG)
-file_handler.setFormatter(logging.Formatter(
-    "[%(levelname)s] %(asctime)s - %(module)s:%(lineno)d - %(message)s",
-    datefmt="%Y-%m-%d %H:%M:%S",
-))
-logger.addHandler(file_handler)
+# File handler (only in local environment, not in Vercel)
+if not IS_VERCEL:
+    try:
+        os.makedirs(LOG_DIR, exist_ok=True)
+        log_file = os.path.join(LOG_DIR, f"api_{datetime.now().strftime('%Y-%m-%d')}.log")
+        file_handler = logging.FileHandler(log_file, encoding="utf-8")
+        file_handler.setLevel(logging.DEBUG)
+        file_handler.setFormatter(logging.Formatter(
+            "[%(levelname)s] %(asctime)s - %(module)s:%(lineno)d - %(message)s",
+            datefmt="%Y-%m-%d %H:%M:%S",
+        ))
+        logger.addHandler(file_handler)
+    except OSError:
+        # If file creation fails, just use console
+        pass
 
 
 def log_api_call(endpoint: str, request_data: dict, response_data=None, error=None, duration_ms=None):
