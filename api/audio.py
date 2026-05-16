@@ -1,62 +1,14 @@
 """Vercel Serverless Function: Audio content analysis."""
 import ast
-import base64
 import json
 import os
 import re
 import time
-from typing import Optional, Tuple
+from typing import Optional
 
 import httpx
 from logger import logger, log_api_call
 from blob_cleanup import delete_blob
-
-
-# Audio → MIME type mapping for base64 data URL construction
-_AUDIO_EXT_MIME = {
-    ".mp3": "audio/mpeg",
-    ".wav": "audio/wav",
-    ".flac": "audio/flac",
-    ".m4a": "audio/mp4",
-    ".ogg": "audio/ogg",
-    ".aac": "audio/aac",
-}
-
-# MiMo API limit: base64-encoded string ≤ 50 MB.
-_MAX_ORIGINAL_BYTES = 35 * 1024 * 1024  # 35 MB
-
-
-def _download_audio_to_base64(audio_url: str) -> Tuple[str, str]:
-    """Download audio from Vercel Blob and return (data_url, mime_type)."""
-    path = audio_url.split("?")[0].split("#")[0]
-    _, ext = os.path.splitext(path)
-    ext = ext.lower()
-    mime_type = _AUDIO_EXT_MIME.get(ext, "audio/mpeg")
-
-    logger.info(f"Downloading audio from blob for base64 encoding, mime={mime_type}")
-
-    with httpx.Client(timeout=120.0, follow_redirects=True) as client:
-        resp = client.get(audio_url)
-        if resp.status_code != 200:
-            raise Exception(
-                f"Failed to download audio from blob: HTTP {resp.status_code}"
-            )
-        audio_bytes = resp.content
-
-    size_mb = len(audio_bytes) / (1024 * 1024)
-    logger.info(f"Downloaded {size_mb:.1f} MB, encoding to base64")
-
-    if len(audio_bytes) > _MAX_ORIGINAL_BYTES:
-        raise Exception(
-            f"Audio too large for MiMo base64 input ({size_mb:.1f} MB). "
-            f"Please use an audio file under 35 MB."
-        )
-
-    encoded = base64.b64encode(audio_bytes).decode("ascii")
-    data_url = f"data:{mime_type};base64,{encoded}"
-    logger.info(f"Base64 encoded OK, data URL length={len(data_url)} chars")
-
-    return data_url, mime_type
 
 
 AUDIO_PROMPT = """请分析这个音频的内容。必须返回严格的JSON格式，不要添加任何其他文字、解释或markdown标记。
@@ -145,17 +97,12 @@ def handler(request):
 
 
 def _call_audio_analysis(audio_url: str, api_key: str, base_url: str) -> dict:
-    """Call Xiaomi MiMo V2.5 audio understanding API.
-
-    Downloads audio from Vercel Blob and passes as base64 data URL because
-    MiMo API servers (in China) cannot reach Vercel Blob public URLs.
-    """
-    data_url, _ = _download_audio_to_base64(audio_url)
-    api_url = f"{base_url}/chat/completions"
+    """Call Xiaomi MiMo V2.5 audio understanding API."""
+    url = f"{base_url}/chat/completions"
 
     with httpx.Client(timeout=60.0) as client:
         response = client.post(
-            api_url,
+            url,
             headers={
                 "api-key": api_key,
                 "Content-Type": "application/json",
@@ -176,7 +123,7 @@ def _call_audio_analysis(audio_url: str, api_key: str, base_url: str) -> dict:
                         "content": [
                             {
                                 "type": "input_audio",
-                                "input_audio": {"data": data_url},
+                                "input_audio": {"data": audio_url},
                             },
                             {
                                 "type": "text",
