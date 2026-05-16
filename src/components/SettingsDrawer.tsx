@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Drawer, Input, Switch, Button, Upload, message, Radio } from 'antd';
 import type { UploadFile } from 'antd';
-import { UploadOutlined, PictureOutlined, EditOutlined, LoadingOutlined } from '@ant-design/icons';
+import { UploadOutlined, PictureOutlined, EditOutlined, LoadingOutlined, VideoCameraAddOutlined, AudioOutlined, SwapOutlined } from '@ant-design/icons';
 import { useSelector, useDispatch } from 'react-redux';
 import type { RootState } from '../store';
 import {
@@ -13,9 +13,13 @@ import {
   setSelectedEmotion,
   setCustomVoiceFile,
   setCustomVoiceName,
+  setMediaAnalysisMode,
 } from '../store/settingsSlice';
 import { ocrApi } from '../services/ocrApi';
 import { llmApi } from '../services/llmApi';
+import { blobApi } from '../services/blobApi';
+import { videoApi } from '../services/videoApi';
+import { audioApi } from '../services/audioApi';
 import VoiceSelector from './VoiceSelector';
 import styles from './SettingsDrawer.module.css';
 
@@ -23,18 +27,117 @@ const { TextArea } = Input;
 
 const emotions = ['开心', '悲伤', '愤怒', '惊讶', '恐惧', '厌恶', '平静', '激动', '温柔'];
 
+// --- Media file validation (per Xiaomi MiMo API limits) ---
+const SUPPORTED_VIDEO_TYPES: Record<string, string> = {
+  'video/mp4': '.mp4',
+  'video/quicktime': '.mov',
+  'video/x-msvideo': '.avi',
+  'video/x-ms-wmv': '.wmv',
+};
+const SUPPORTED_AUDIO_TYPES: Record<string, string> = {
+  'audio/mpeg': '.mp3',
+  'audio/wav': '.wav',
+  'audio/wave': '.wav',
+  'audio/x-wav': '.wav',
+  'audio/flac': '.flac',
+  'audio/x-flac': '.flac',
+  'audio/mp4': '.m4a',
+  'audio/x-m4a': '.m4a',
+  'audio/ogg': '.ogg',
+  'audio/vorbis': '.ogg',
+};
+const MAX_VIDEO_SIZE = 100 * 1024 * 1024; // 100 MB
+const MAX_AUDIO_SIZE = 100 * 1024 * 1024; // 100 MB (URL mode)
+
+function formatSize(bytes: number): string {
+  if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(0)} KB`;
+  if (bytes < 1024 * 1024 * 1024) return `${(bytes / (1024 * 1024)).toFixed(0)} MB`;
+  return `${(bytes / (1024 * 1024 * 1024)).toFixed(1)} GB`;
+}
+
+function validateVideoFile(file: File): string | null {
+  // Check extension
+  const ext = '.' + file.name.split('.').pop()?.toLowerCase();
+  const supportedExts = Object.values(SUPPORTED_VIDEO_TYPES);
+  if (!supportedExts.includes(ext)) {
+    return `不支持的视频格式 ".${file.name.split('.').pop()}"，支持的格式: ${supportedExts.join(', ')}`;
+  }
+  // Check MIME type
+  if (file.type && !(file.type in SUPPORTED_VIDEO_TYPES)) {
+    return `无法识别的视频类型 "${file.type || '未知'}"，支持的格式: ${supportedExts.join(', ')}`;
+  }
+  // Check size
+  if (file.size > MAX_VIDEO_SIZE) {
+    return `视频文件过大 (${formatSize(file.size)})，最大支持 ${formatSize(MAX_VIDEO_SIZE)}`;
+  }
+  if (file.size === 0) {
+    return '视频文件为空，请选择有效的视频文件';
+  }
+  return null;
+}
+
+function validateAudioFile(file: File): string | null {
+  // Check extension
+  const ext = '.' + file.name.split('.').pop()?.toLowerCase();
+  const supportedExts = Object.values(SUPPORTED_AUDIO_TYPES);
+  if (!supportedExts.includes(ext)) {
+    return `不支持的音频格式 ".${file.name.split('.').pop()}"，支持的格式: ${supportedExts.join(', ')}`;
+  }
+  // Check MIME type (browsers may not set it reliably for audio, skip if empty)
+  if (file.type && !(file.type in SUPPORTED_AUDIO_TYPES)) {
+    return `无法识别的音频类型 "${file.type}"，支持的格式: ${supportedExts.join(', ')}`;
+  }
+  // Check size
+  if (file.size > MAX_AUDIO_SIZE) {
+    return `音频文件过大 (${formatSize(file.size)})，最大支持 ${formatSize(MAX_AUDIO_SIZE)}`;
+  }
+  if (file.size === 0) {
+    return '音频文件为空，请选择有效的音频文件';
+  }
+  return null;
+}
+
+/** Read video duration from File object using a temporary <video> element. */
+function getVideoDuration(file: File): Promise<number> {
+  return new Promise((resolve, reject) => {
+    const url = URL.createObjectURL(file);
+    const video = document.createElement('video');
+    video.preload = 'metadata';
+    video.onloadedmetadata = () => {
+      URL.revokeObjectURL(url);
+      resolve(video.duration);
+    };
+    video.onerror = () => {
+      URL.revokeObjectURL(url);
+      reject(new Error('无法读取视频信息'));
+    };
+    video.src = url;
+  });
+}
+
 interface SettingsDrawerProps {
   open: boolean;
   onClose: () => void;
+  onConfirmAnalysis?: (msg: import('../types/chat').ChatMessage) => void;
 }
 
-const SettingsDrawer: React.FC<SettingsDrawerProps> = ({ open, onClose }) => {
+const SettingsDrawer: React.FC<SettingsDrawerProps> = ({ open, onClose, onConfirmAnalysis }) => {
   const dispatch = useDispatch();
   const settings = useSelector((state: RootState) => state.settings);
-  const [sceneInputMode, setSceneInputMode] = useState<'text' | 'image'>('text');
+  const [sceneInputMode, setSceneInputMode] = useState<'text' | 'image' | 'video' | 'audio'>('text');
   const [ocrLoading, setOcrLoading] = useState(false);
   const [ocrResult, setOcrResult] = useState<string>('');
   const [uploadedFile, setUploadedFile] = useState<UploadFile | null>(null);
+  const [mediaAnalysisResult, setMediaAnalysisResult] = useState<{
+    tags: string[];
+    summary: string;
+    fileName: string;
+    characters?: import('../services/videoApi').CharacterInfo[];
+    scene?: string;
+    emotion?: string;
+    voice_style?: string;
+  } | null>(null);
+  const [mediaLoading, setMediaLoading] = useState(false);
 
   const handleImageUpload = async (file: File) => {
     setOcrLoading(true);
@@ -77,6 +180,138 @@ const SettingsDrawer: React.FC<SettingsDrawerProps> = ({ open, onClose }) => {
     setUploadedFile(null);
   };
 
+  const handleVideoUpload = async (file: File) => {
+    // Validate format before uploading
+    const validationError = validateVideoFile(file);
+    if (validationError) {
+      message.error(validationError, 5);
+      return false;
+    }
+
+    setMediaLoading(true);
+    setUploadedFile({ uid: file.name, name: file.name, status: 'uploading' });
+
+    try {
+      // Read video duration for adaptive FPS
+      let duration: number | undefined;
+      try {
+        duration = await getVideoDuration(file);
+      } catch {
+        // Non-fatal: proceed without duration (backend uses default fps=2)
+      }
+
+      const blobUrl = await blobApi.upload(file);
+      const result = await videoApi.analyze(blobUrl, duration);
+      setMediaAnalysisResult({ ...result, fileName: file.name });
+      setUploadedFile({ uid: file.name, name: file.name, status: 'done' });
+      message.success('视频分析完成');
+    } catch (error: any) {
+      console.error('Video analysis failed:', error);
+      const errMsg = error?.message || error?.response?.data?.error || '';
+      if (errMsg.includes('corrupted') || errMsg.includes('cannot be processed')) {
+        message.error('视频无法被识别，请尝试：\n1. 转换视频为 H.264 编码的 MP4 格式\n2. 减小视频体积（建议 < 200MB）\n3. 确保视频可正常播放', 6);
+      } else {
+        message.error(error?.response?.data?.error || '视频分析失败，请重试');
+      }
+      setUploadedFile({ uid: file.name, name: file.name, status: 'error' });
+    } finally {
+      setMediaLoading(false);
+    }
+
+    return false;
+  };
+
+  const handleAudioUpload = async (file: File) => {
+    // Validate format before uploading
+    const validationError = validateAudioFile(file);
+    if (validationError) {
+      message.error(validationError, 5);
+      return false;
+    }
+
+    setMediaLoading(true);
+    setUploadedFile({ uid: file.name, name: file.name, status: 'uploading' });
+
+    try {
+      const blobUrl = await blobApi.upload(file);
+      const result = await audioApi.analyze(blobUrl);
+      setMediaAnalysisResult({ ...result, fileName: file.name });
+      setUploadedFile({ uid: file.name, name: file.name, status: 'done' });
+      message.success('音频分析完成');
+    } catch (error: any) {
+      console.error('Audio analysis failed:', error);
+      const errMsg = error?.message || error?.response?.data?.error || '';
+      if (errMsg.includes('corrupted') || errMsg.includes('cannot be processed')) {
+        message.error('音频无法被识别，请尝试：\n1. 转换为 MP3 或 WAV 格式\n2. 减小音频体积（建议 < 50MB）\n3. 确保音频可正常播放', 6);
+      } else {
+        message.error(error?.response?.data?.error || '音频分析失败，请重试');
+      }
+      setUploadedFile({ uid: file.name, name: file.name, status: 'error' });
+    } finally {
+      setMediaLoading(false);
+    }
+
+    return false;
+  };
+
+  const handleConfirmMediaScene = () => {
+    if (!mediaAnalysisResult) return;
+    // Auto-fill: scene description (combine scene + summary)
+    const fullScene = [
+      mediaAnalysisResult.scene,
+      mediaAnalysisResult.summary,
+    ].filter(Boolean).join('。');
+    dispatch(setScene(fullScene));
+
+    // Auto-fill: character info (first character's role + personality)
+    if (mediaAnalysisResult.characters?.length) {
+      const primary = mediaAnalysisResult.characters[0];
+      const characterDesc = [primary.role, primary.personality, primary.voice_hint]
+        .filter(Boolean).join('，');
+      dispatch(setCharacter(characterDesc));
+    }
+
+    // Auto-fill: emotion if available
+    if (mediaAnalysisResult.emotion) {
+      dispatch(setSelectedEmotion(mediaAnalysisResult.emotion));
+    }
+
+    // Auto-fill: voice style as direction
+    if (mediaAnalysisResult.voice_style) {
+      dispatch(setDirection(mediaAnalysisResult.voice_style));
+    }
+
+    setMediaAnalysisResult(null);
+    setUploadedFile(null);
+    message.success('场景描述和配音信息已保存');
+  };
+
+  const handleConfirmMediaAnalysis = () => {
+    if (!mediaAnalysisResult || !onConfirmAnalysis) return;
+    const analysisMessage: import('../types/chat').ChatMessage = {
+      id: `analysis_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+      role: 'assistant',
+      content: '',
+      type: 'analysis',
+      analysis: {
+        tags: mediaAnalysisResult.tags,
+        summary: mediaAnalysisResult.summary,
+        mediaType: sceneInputMode as 'video' | 'audio',
+        fileName: mediaAnalysisResult.fileName,
+      },
+      timestamp: Date.now(),
+    };
+    onConfirmAnalysis(analysisMessage);
+    setMediaAnalysisResult(null);
+    setUploadedFile(null);
+    message.success('分析结果已发送');
+  };
+
+  const handleCancelMedia = () => {
+    setMediaAnalysisResult(null);
+    setUploadedFile(null);
+  };
+
   return (
     <Drawer
       title="设置"
@@ -97,11 +332,17 @@ const SettingsDrawer: React.FC<SettingsDrawerProps> = ({ open, onClose }) => {
           buttonStyle="solid"
           size="small"
         >
-          <Radio.Button value="text" style={{ width: '50%', textAlign: 'center' }}>
-            <EditOutlined /> 文字输入
+          <Radio.Button value="text" style={{ width: '25%', textAlign: 'center' }}>
+            <EditOutlined />
           </Radio.Button>
-          <Radio.Button value="image" style={{ width: '50%', textAlign: 'center' }}>
-            <PictureOutlined /> 图片OCR
+          <Radio.Button value="image" style={{ width: '25%', textAlign: 'center' }}>
+            <PictureOutlined />
+          </Radio.Button>
+          <Radio.Button value="video" style={{ width: '25%', textAlign: 'center' }}>
+            <VideoCameraAddOutlined />
+          </Radio.Button>
+          <Radio.Button value="audio" style={{ width: '25%', textAlign: 'center' }}>
+            <AudioOutlined />
           </Radio.Button>
         </Radio.Group>
 
@@ -158,6 +399,127 @@ const SettingsDrawer: React.FC<SettingsDrawerProps> = ({ open, onClose }) => {
             )}
 
             {settings.scene && !ocrResult && (
+              <div className={styles.currentScene}>
+                <div className={styles.currentSceneLabel}>当前场景</div>
+                <div className={styles.currentSceneText}>{settings.scene}</div>
+              </div>
+            )}
+          </div>
+        )}
+
+        {(sceneInputMode === 'video' || sceneInputMode === 'audio') && (
+          <div className={styles.ocrSection}>
+            <Upload
+              beforeUpload={sceneInputMode === 'video' ? handleVideoUpload : handleAudioUpload}
+              showUploadList={false}
+              accept={sceneInputMode === 'video' ? 'video/*' : 'audio/*'}
+              disabled={mediaLoading}
+            >
+              <Button
+                icon={mediaLoading ? <LoadingOutlined /> : <UploadOutlined />}
+                loading={mediaLoading}
+                block
+              >
+                {mediaLoading
+                  ? `正在分析${sceneInputMode === 'video' ? '视频' : '音频'}...`
+                  : `选择${sceneInputMode === 'video' ? '视频' : '音频'}`}
+              </Button>
+            </Upload>
+
+            {uploadedFile && !mediaAnalysisResult && (
+              <div className={styles.uploadedFile}>
+                {sceneInputMode === 'video' ? <VideoCameraAddOutlined /> : <AudioOutlined />}{' '}
+                {uploadedFile.name}
+              </div>
+            )}
+
+            {mediaAnalysisResult && (
+              <div className={styles.ocrResult}>
+                <div className={styles.ocrResultLabel}>
+                  {sceneInputMode === 'video' ? '视频' : '音频'}分析结果
+                </div>
+                <div className={styles.mediaTags}>
+                  {mediaAnalysisResult.tags.map((tag) => (
+                    <span key={tag} className={styles.mediaTag}>{tag}</span>
+                  ))}
+                </div>
+
+                {/* Scene info */}
+                {mediaAnalysisResult.scene && (
+                  <div style={{ fontSize: 12, color: '#888', marginBottom: 4 }}>
+                    场景：{mediaAnalysisResult.scene}
+                  </div>
+                )}
+
+                {/* Characters */}
+                {mediaAnalysisResult.characters && mediaAnalysisResult.characters.length > 0 && (
+                  <div style={{ marginBottom: 8 }}>
+                    {mediaAnalysisResult.characters.map((ch, i) => (
+                      <div key={i} style={{ fontSize: 12, color: '#555', marginBottom: 2 }}>
+                        <strong>{ch.role}</strong>
+                        {ch.gender && ` · ${ch.gender}`}
+                        {ch.age && ` · ${ch.age}`}
+                        {ch.personality && ` · ${ch.personality}`}
+                        {ch.voice_hint && (
+                          <div style={{ color: '#1677ff', fontSize: 11 }}>🎤 {ch.voice_hint}</div>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                )}
+
+                {/* Emotion + Voice style */}
+                <div style={{ marginBottom: 6, fontSize: 12 }}>
+                  {mediaAnalysisResult.emotion && (
+                    <span style={{ marginRight: 12 }}>
+                      情绪：<span style={{ color: '#1677ff' }}>{mediaAnalysisResult.emotion}</span>
+                    </span>
+                  )}
+                  {mediaAnalysisResult.voice_style && (
+                    <div style={{ color: '#888', marginTop: 2 }}>
+                      配音建议：{mediaAnalysisResult.voice_style}
+                    </div>
+                  )}
+                </div>
+
+                <TextArea
+                  rows={3}
+                  value={mediaAnalysisResult.summary}
+                  readOnly
+                />
+                <div className={styles.modeSwitch}>
+                  <Radio.Group
+                    value={settings.mediaAnalysisMode}
+                    onChange={(e) => dispatch(setMediaAnalysisMode(e.target.value))}
+                    size="small"
+                    optionType="button"
+                  >
+                    <Radio.Button value="scene">
+                      <SwapOutlined /> 作为场景输入
+                    </Radio.Button>
+                    <Radio.Button value="standalone">
+                      <SwapOutlined /> 仅分析
+                    </Radio.Button>
+                  </Radio.Group>
+                </div>
+                <div className={styles.ocrActions}>
+                  {settings.mediaAnalysisMode === 'scene' ? (
+                    <Button type="primary" size="small" onClick={handleConfirmMediaScene}>
+                      确认使用
+                    </Button>
+                  ) : (
+                    <Button type="primary" size="small" onClick={handleConfirmMediaAnalysis}>
+                      提交分析
+                    </Button>
+                  )}
+                  <Button size="small" onClick={handleCancelMedia}>
+                    取消
+                  </Button>
+                </div>
+              </div>
+            )}
+
+            {settings.scene && !mediaAnalysisResult && (
               <div className={styles.currentScene}>
                 <div className={styles.currentSceneLabel}>当前场景</div>
                 <div className={styles.currentSceneText}>{settings.scene}</div>

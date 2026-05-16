@@ -173,6 +173,7 @@ const Home: React.FC = () => {
       <SettingsDrawer
         open={settingsOpen}
         onClose={() => dispatch(setDrawerOpen(false))}
+        onConfirmAnalysis={(msg) => dispatch(addMessage(msg))}
       />
     </div>
   );

@@ -17,6 +17,10 @@ sys.path.insert(0, os.path.dirname(__file__))
 from tts import handler as tts_handler
 from llm import handler as llm_handler
 from ocr import handler as ocr_handler
+from blob_token import handler as blob_token_handler
+from blob_upload import handler as blob_upload_handler
+from video import handler as video_handler
+from audio import handler as audio_handler
 
 app = Flask(__name__)
 CORS(app, resources={r"/api/*": {"origins": "*"}})
@@ -76,6 +80,52 @@ def ocr_route():
         body=request.get_data(),
     )
     return _call_handler(ocr_handler, wrapper)
+
+
+@app.route("/api/blob-token", methods=["GET"])
+def blob_token_route():
+    wrapper = RequestWrapper(
+        method=request.method,
+        headers=dict(request.headers),
+        body=request.get_data(),
+    )
+    return _call_handler(blob_token_handler, wrapper)
+
+
+@app.route("/api/blob-upload", methods=["POST", "OPTIONS"])
+def blob_upload_route():
+    if request.method == "OPTIONS":
+        return "", 204
+    wrapper = RequestWrapper(
+        method=request.method,
+        headers=dict(request.headers),
+        body=request.get_data(),
+    )
+    return _call_handler(blob_upload_handler, wrapper)
+
+
+@app.route("/api/video", methods=["POST", "OPTIONS"])
+def video_route():
+    if request.method == "OPTIONS":
+        return "", 204
+    wrapper = RequestWrapper(
+        method=request.method,
+        headers=dict(request.headers),
+        body=request.get_data(),
+    )
+    return _call_handler(video_handler, wrapper)
+
+
+@app.route("/api/audio", methods=["POST", "OPTIONS"])
+def audio_route():
+    if request.method == "OPTIONS":
+        return "", 204
+    wrapper = RequestWrapper(
+        method=request.method,
+        headers=dict(request.headers),
+        body=request.get_data(),
+    )
+    return _call_handler(audio_handler, wrapper)
 
 
 @app.route("/api/health", methods=["GET"])

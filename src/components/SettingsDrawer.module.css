@@ -285,3 +285,34 @@
 :global(.ant-upload) {
   width: 100% !important;
 }
+
+/* Media Analysis */
+.mediaTags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 10px;
+}
+
+.mediaTag {
+  font-size: 11px;
+  font-weight: 500;
+  padding: 2px 10px;
+  border-radius: 12px;
+  background: #3b82f6;
+  color: #fff;
+}
+
+.modeSwitch {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.modeLabel {
+  font-size: 12px;
+  color: #666;
+  font-weight: 500;
+  white-space: nowrap;
+}

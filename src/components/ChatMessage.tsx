@@ -51,6 +51,22 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ message }) => {
       <div className={styles.bubbleWrapper}>
         <div className={`${styles.bubble} ${isUser ? styles.bubbleUser : styles.bubbleAssistant}`}>
           {message.isProcessing && <span className={styles.spinner} />}
+
+          {message.type === 'analysis' && message.analysis && (
+            <div className={styles.analysisContent}>
+              <div className={styles.analysisHeader}>
+                {message.analysis.mediaType === 'video' ? '🎬 视频分析结果' : '🎧 音频分析结果'}
+              </div>
+              <div className={styles.analysisFile}>文件: {message.analysis.fileName}</div>
+              <div className={styles.analysisTags}>
+                {message.analysis.tags.map((tag, i) => (
+                  <span key={i} className={styles.analysisTag}>{tag}</span>
+                ))}
+              </div>
+              <div className={styles.analysisSummary}>{message.analysis.summary}</div>
+            </div>
+          )}
+
           <div className={styles.content}>{message.content}</div>
 
           {!isUser && message.processedText && message.processedText !== message.content && (

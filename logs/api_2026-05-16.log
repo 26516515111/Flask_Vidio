@@ -1,0 +1,32 @@
+[INFO] 2026-05-16 00:07:40 - blob_upload:15 - Blob upload requested, content-type: multipart/form-data; boundary=----WebKitFormBoundaryLTHPAAWPwFSnYtYX
+[INFO] 2026-05-16 00:07:40 - blob_upload:50 - File parsed: 短视频入门教学，快速提升电影感的拍摄技巧-摄影视频-搜狐视频.mp4, size=2001529 bytes
+[INFO] 2026-05-16 00:07:54 - blob_upload:57 - Blob uploaded OK: https://lsi9tchulfhhv5fp.public.blob.vercel-storage.com/038919dd-%E7%9F%AD%E8%A7%86%E9%A2%91%E5%85%A5%E9%97%A8%E6%95%99%E5%AD%A6%EF%BC%8C%E5%BF%AB%E9%80%9F%E6%8F%90%E5%8D%87%E7%94%B5%E5%BD%B1%E6%84%9F%E7%9A%84%E6%8B%8D%E6%91%84%E6%8A%80%E5%B7%A7-%E6%91%84%E5%BD%B1%E8%A7%86%E9%A2%91-%E6%90%9C%E7%8B%90%E8%A7%86%E9%A2%91-unGkgSCR07cD2E2BXd4PQO1LMDzxwf.mp4
+[INFO] 2026-05-16 00:07:54 - video:72 - Video analysis requested, URL: https://lsi9tchulfhhv5fp.public.blob.vercel-storage.com/038919dd-%E7%9F%AD%E8%A7..., duration=15.4s, fps=2.0, resolution=default
+[DEBUG] 2026-05-16 00:08:18 - video:153 - Xiaomi raw response: 
+[WARNING] 2026-05-16 00:08:18 - video:168 - Empty response from model
+[INFO] 2026-05-16 00:08:18 - logger:51 - API Call: {"endpoint": "/api/video", "timestamp": "2026-05-16T00:08:18.279088", "request": {"url": "https://lsi9tchulfhhv5fp.public.blob.vercel-storage.com/038919dd-%E7%9F%AD%E8%A7"}, "response": "{'tags': [], 'summary': ''}", "duration_ms": 23445.81151008606}
+[INFO] 2026-05-16 00:08:18 - video:90 - Video analysis completed in 23446ms, tags=[]
+[INFO] 2026-05-16 00:08:19 - blob_cleanup:48 - Blob cleaned up: https://lsi9tchulfhhv5fp.public.blob.vercel-storage.com/038919dd-%E7%9F%AD%E8%A7...
+[INFO] 2026-05-16 00:09:47 - blob_upload:15 - Blob upload requested, content-type: multipart/form-data; boundary=----WebKitFormBoundaryPVD3EBGLpE7zAYjX
+[INFO] 2026-05-16 00:09:47 - blob_upload:50 - File parsed: 短视频入门教学，快速提升电影感的拍摄技巧-摄影视频-搜狐视频.mp4, size=2001529 bytes
+[INFO] 2026-05-16 00:09:55 - blob_upload:57 - Blob uploaded OK: https://lsi9tchulfhhv5fp.public.blob.vercel-storage.com/4be1fc87-%E7%9F%AD%E8%A7%86%E9%A2%91%E5%85%A5%E9%97%A8%E6%95%99%E5%AD%A6%EF%BC%8C%E5%BF%AB%E9%80%9F%E6%8F%90%E5%8D%87%E7%94%B5%E5%BD%B1%E6%84%9F%E7%9A%84%E6%8B%8D%E6%91%84%E6%8A%80%E5%B7%A7-%E6%91%84%E5%BD%B1%E8%A7%86%E9%A2%91-%E6%90%9C%E7%8B%90%E8%A7%86%E9%A2%91-GoL6BdXVWqSKpDReNjKpNDiyLawaUy.mp4
+[INFO] 2026-05-16 00:09:55 - video:72 - Video analysis requested, URL: https://lsi9tchulfhhv5fp.public.blob.vercel-storage.com/4be1fc87-%E7%9F%AD%E8%A7..., duration=15.4s, fps=2.0, resolution=default
+[DEBUG] 2026-05-16 00:10:13 - video:153 - Xiaomi raw response: 
+[WARNING] 2026-05-16 00:10:13 - video:168 - Empty response from model
+[INFO] 2026-05-16 00:10:13 - logger:51 - API Call: {"endpoint": "/api/video", "timestamp": "2026-05-16T00:10:13.078398", "request": {"url": "https://lsi9tchulfhhv5fp.public.blob.vercel-storage.com/4be1fc87-%E7%9F%AD%E8%A7"}, "response": "{'tags': [], 'summary': ''}", "duration_ms": 17566.373109817505}
+[INFO] 2026-05-16 00:10:13 - video:90 - Video analysis completed in 17566ms, tags=[]
+[INFO] 2026-05-16 00:10:15 - blob_cleanup:48 - Blob cleaned up: https://lsi9tchulfhhv5fp.public.blob.vercel-storage.com/4be1fc87-%E7%9F%AD%E8%A7...
+[INFO] 2026-05-16 00:10:38 - ocr:16 - OCR request, content-type: multipart/form-data; boundary=----WebKitFormBounda
+[INFO] 2026-05-16 00:12:07 - blob_upload:15 - Blob upload requested, content-type: multipart/form-data; boundary=----WebKitFormBoundaryelnrd5ELSgd2CfmM
+[INFO] 2026-05-16 00:12:07 - blob_upload:50 - File parsed: 短视频入门教学，快速提升电影感的拍摄技巧-摄影视频-搜狐视频.mp4, size=2001529 bytes
+[INFO] 2026-05-16 00:12:13 - blob_upload:57 - Blob uploaded OK: https://lsi9tchulfhhv5fp.public.blob.vercel-storage.com/c5758ea2-%E7%9F%AD%E8%A7%86%E9%A2%91%E5%85%A5%E9%97%A8%E6%95%99%E5%AD%A6%EF%BC%8C%E5%BF%AB%E9%80%9F%E6%8F%90%E5%8D%87%E7%94%B5%E5%BD%B1%E6%84%9F%E7%9A%84%E6%8B%8D%E6%91%84%E6%8A%80%E5%B7%A7-%E6%91%84%E5%BD%B1%E8%A7%86%E9%A2%91-%E6%90%9C%E7%8B%90%E8%A7%86%E9%A2%91-7brKqh7f18MEgxM8I3WF1E8GdGJqbZ.mp4
+[INFO] 2026-05-16 00:12:13 - video:56 - Video analysis requested, URL: https://lsi9tchulfhhv5fp.public.blob.vercel-storage.com/c5758ea2-%E7%9F%AD%E8%A7..., duration=15.4s, fps=2.0, resolution=default
+[DEBUG] 2026-05-16 00:12:24 - video:137 - Xiaomi raw response: ```json
+{
+  "tags": ["悬疑", "剧集预告", "家庭", "犯罪"],
+  "summary": "这段视频是剧集《都是她的错》第一季的预告片。故事始于母亲玛丽莎去接儿子迈洛时，却被告知那里没有叫迈洛的人，随后迈洛失踪的消息传出，引发了一场关于孩子失踪真相的悬疑风暴。",
+  "characters": [
+    {"role": "玛丽莎", "gender": "女"
+[INFO] 2026-05-16 00:12:24 - logger:51 - API Call: {"endpoint": "/api/video", "timestamp": "2026-05-16T00:12:24.980906", "request": {"url": "https://lsi9tchulfhhv5fp.public.blob.vercel-storage.com/c5758ea2-%E7%9F%AD%E8%A7"}, "response": "{'tags': ['悬疑', '剧集预告', '家庭', '犯罪'], 'summary': '这段视频是剧集《都是她的错》第一季的预告片。故事始于母亲玛丽莎去接儿子迈洛时，却被告知那里没有叫迈洛的人，随后迈洛失踪的消息传出，引发了一场关于孩子失踪真相的悬疑风暴。', 'characters': [{'role': '玛丽莎', 'gender': '女', 'age': '中年', 'personality': '焦虑', 'voice_hint': '清亮女声'}, {'role': '开门女子', 'gender': '女', 'age': '中年', 'personality': '冷漠', 'voice_hint': '平淡女声'}, {'role': '男性角色', 'gender': '男', 'age': '青年', 'personality': '沉稳严肃', 'voice_hint': '低沉男声'}], 'scene': '郊区住宅门口（白天）转场至街道与室内（紧张氛围）', 'emotion': '惊讶 -> 焦虑 -> 恐惧', 'voice_style':", "duration_ms": 11503.436088562012}
+[INFO] 2026-05-16 00:12:24 - video:74 - Video analysis completed in 11503ms, tags=['悬疑', '剧集预告', '家庭', '犯罪']
+[INFO] 2026-05-16 00:12:27 - blob_cleanup:48 - Blob cleaned up: https://lsi9tchulfhhv5fp.public.blob.vercel-storage.com/c5758ea2-%E7%9F%AD%E8%A7...

@@ -5,11 +5,7 @@ export const ocrApi = {
     const formData = new FormData();
     formData.append('file', file);
 
-    const response = await api.post('/ocr', formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
-    });
+    const response = await api.post('/ocr', formData);
     return response.data;
   },
 };

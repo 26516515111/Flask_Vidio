@@ -3,6 +3,7 @@ import json
 import os
 import base64
 import httpx
+from logger import logger, get_header
 
 
 def handler(request):
@@ -11,7 +12,8 @@ def handler(request):
         return {"statusCode": 405, "body": json.dumps({"error": "Method not allowed"})}
 
     try:
-        content_type = request.headers.get("content-type", "")
+        content_type = get_header(request.headers, "content-type")
+        logger.info(f"OCR request, content-type: {content_type[:50]}")
         if "multipart/form-data" not in content_type:
             return {"statusCode": 400, "body": json.dumps({"error": "Expected multipart/form-data"})}
 
@@ -49,6 +51,7 @@ def handler(request):
         return {"statusCode": 200, "body": json.dumps(result, ensure_ascii=False)}
 
     except Exception as e:
+        logger.error(f"OCR failed: {e}", exc_info=True)
         return {"statusCode": 500, "body": json.dumps({"error": str(e)})}
 
 

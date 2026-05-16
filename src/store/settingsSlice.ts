@@ -13,6 +13,7 @@ const initialState: SettingsState = {
   selectedProcessing: '',
   customVoiceFile: null,
   customVoiceName: '',
+  mediaAnalysisMode: 'scene' as 'scene' | 'standalone',
   drawerOpen: false,
 };
 
@@ -53,6 +54,9 @@ const settingsSlice = createSlice({
     setCustomVoiceName: (state, action: PayloadAction<string>) => {
       state.customVoiceName = action.payload;
     },
+    setMediaAnalysisMode: (state, action: PayloadAction<'scene' | 'standalone'>) => {
+      state.mediaAnalysisMode = action.payload;
+    },
     setDrawerOpen: (state, action: PayloadAction<boolean>) => {
       state.drawerOpen = action.payload;
     },
@@ -72,6 +76,7 @@ export const {
   setSelectedProcessing,
   setCustomVoiceFile,
   setCustomVoiceName,
+  setMediaAnalysisMode,
   setDrawerOpen,
   resetSettings,
 } = settingsSlice.actions;

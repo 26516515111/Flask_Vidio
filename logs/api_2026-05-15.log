@@ -1,0 +1,248 @@
+[INFO] 2026-05-15 17:52:44 - video:34 - Video analysis requested, URL: https://www.w3schools.com/html/mov_bbb.mp4...
+[DEBUG] 2026-05-15 17:52:53 - video:104 - Xiaomi raw response: {
+  "tags": ["动画", "喜剧短片"],
+  "summary": "这是一段动画片段，圆滚滚的白兔在草地上被飞舞的紫色蝴蝶吸引，它满脸欣喜地靠近蝴蝶，却在扑抓时误将蝴蝶重重拍落在地，原本温馨的画面瞬间转为充满反差感的滑稽场景。"
+}
+[INFO] 2026-05-15 17:52:53 - logger:51 - API Call: {"endpoint": "/api/video", "timestamp": "2026-05-15T17:52:53.562975", "request": {"url": "https://www.w3schools.com/html/mov_bbb.mp4"}, "response": "{'tags': ['动画', '喜剧短片'], 'summary': '这是一段动画片段，圆滚滚的白兔在草地上被飞舞的紫色蝴蝶吸引，它满脸欣喜地靠近蝴蝶，却在扑抓时误将蝴蝶重重拍落在地，原本温馨的画面瞬间转为充满反差感的滑稽场景。'}", "duration_ms": 9213.67335319519}
+[INFO] 2026-05-15 17:52:53 - video:49 - Video analysis completed in 9214ms, tags=['动画', '喜剧短片']
+[INFO] 2026-05-15 18:01:22 - video:34 - Video analysis requested, URL: https://www.w3schools.com/html/mov_bbb.mp4...
+[DEBUG] 2026-05-15 18:01:37 - video:104 - Xiaomi raw response: {
+  "tags": ["动画", "短剧"],
+  "summary": "这段视频是一个动画短片，展示了一只白兔在绿草如茵的户外享受阳光，一只紫色蝴蝶飞来落在它头上，让兔子显得开心。但突然一颗苹果从天而降砸中兔子，导致它摔倒在地，整个过程充满幽默和卡通元素。"
+}
+[INFO] 2026-05-15 18:01:37 - logger:51 - API Call: {"endpoint": "/api/video", "timestamp": "2026-05-15T18:01:37.584163", "request": {"url": "https://www.w3schools.com/html/mov_bbb.mp4"}, "response": "{'tags': ['动画', '短剧'], 'summary': '这段视频是一个动画短片，展示了一只白兔在绿草如茵的户外享受阳光，一只紫色蝴蝶飞来落在它头上，让兔子显得开心。但突然一颗苹果从天而降砸中兔子，导致它摔倒在地，整个过程充满幽默和卡通元素。'}", "duration_ms": 15401.650428771973}
+[INFO] 2026-05-15 18:01:37 - video:49 - Video analysis completed in 15402ms, tags=['动画', '短剧']
+[INFO] 2026-05-15 18:04:43 - ocr:16 - OCR request, content-type: 
+[INFO] 2026-05-15 18:05:34 - ocr:16 - OCR request, content-type: 
+[INFO] 2026-05-15 18:05:58 - ocr:16 - OCR request, content-type: 
+[INFO] 2026-05-15 18:09:31 - <string>:1 - TEST LOG from diagnostic
+[INFO] 2026-05-15 18:13:25 - ocr:16 - OCR request, content-type: 
+[INFO] 2026-05-15 22:02:15 - ocr:16 - OCR request, content-type: 
+[INFO] 2026-05-15 22:02:36 - ocr:16 - OCR request, content-type: 
+[INFO] 2026-05-15 22:02:52 - ocr:16 - OCR request, content-type: 
+[INFO] 2026-05-15 22:14:18 - blob_upload:15 - Blob upload requested, content-type: 
+[INFO] 2026-05-15 22:15:58 - blob_upload:15 - Blob upload requested, content-type: multipart/form-data; boundary=----WebKitFormBoundary7c5e3f8d-388
+[INFO] 2026-05-15 22:15:58 - blob_upload:50 - File parsed: test.txt, size=23 bytes
+[INFO] 2026-05-15 22:16:02 - blob_upload:57 - Blob uploaded OK: https://lsi9tchulfhhv5fp.public.blob.vercel-storage.com/b68e5d46-test-4yWXKa61YmFSyoftkQgMVjbrg8dyfP.txt
+[INFO] 2026-05-15 22:16:25 - ocr:16 - OCR request, content-type: multipart/form-data; boundary=----WebKitFormBounda
+[INFO] 2026-05-15 22:17:44 - video:34 - Video analysis requested, URL: https://lsi9tchulfhhv5fp.public.blob.vercel-storage.com/b68e5d46-test-4yWXKa61Ym...
+[ERROR] 2026-05-15 22:17:46 - video:55 - Video analysis failed: Xiaomi Video API error (400): {"error":{"code":"400","message":"Param Incorrect","param":"invalid video format, only mp4/wmv/mov/avi are supported","type":""}}
+Traceback (most recent call last):
+  File "D:\work\语音转换助手-vercel\api\video.py", line 45, in handler
+    result = _call_video_analysis(blob_url, api_key, base_url)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\work\语音转换助手-vercel\api\video.py", line 100, in _call_video_analysis
+    raise Exception(f"Xiaomi Video API error ({response.status_code}): {response.text}")
+Exception: Xiaomi Video API error (400): {"error":{"code":"400","message":"Param Incorrect","param":"invalid video format, only mp4/wmv/mov/avi are supported","type":""}}
+[INFO] 2026-05-15 22:17:46 - logger:51 - API Call: {"endpoint": "/api/video", "timestamp": "2026-05-15T22:17:46.445652", "request": {"url": "https://lsi9tchulfhhv5fp.public.blob.vercel-storage.com/b68e5d46-test-4yWXKa61Ym"}, "error": "Xiaomi Video API error (400): {\"error\":{\"code\":\"400\",\"message\":\"Param Incorrect\",\"param\":\"invalid video format, only mp4/wmv/mov/avi are supported\",\"type\":\"\"}}", "duration_ms": 2027.472734451294}
+[INFO] 2026-05-15 22:20:21 - ocr:16 - OCR request, content-type: application/json
+[INFO] 2026-05-15 22:20:49 - ocr:16 - OCR request, content-type: application/json
+[INFO] 2026-05-15 22:24:04 - ocr:16 - OCR request, content-type: multipart/form-data; boundary=----WebKitFormBounda
+[INFO] 2026-05-15 22:25:04 - blob_upload:15 - Blob upload requested, content-type: multipart/form-data; boundary=----WebKitFormBoundaryp2zGw5sASNm2BHz0
+[INFO] 2026-05-15 22:25:04 - blob_upload:50 - File parsed: 欢迎来到实力至上主义教室 第二季_欢迎来到实力至上主义教室2第01话_番剧 - 嗷呜动漫.mp4, size=217467954 bytes
+[INFO] 2026-05-15 22:26:28 - blob_upload:57 - Blob uploaded OK: https://lsi9tchulfhhv5fp.public.blob.vercel-storage.com/be08450a-%E6%AC%A2%E8%BF%8E%E6%9D%A5%E5%88%B0%E5%AE%9E%E5%8A%9B%E8%87%B3%E4%B8%8A%E4%B8%BB%E4%B9%89%E6%95%99%E5%AE%A4%20%E7%AC%AC%E4%BA%8C%E5%AD%A3_%E6%AC%A2%E8%BF%8E%E6%9D%A5%E5%88%B0%E5%AE%9E%E5%8A%9B%E8%87%B3%E4%B8%8A%E4%B8%BB%E4%B9%89%E6%95%99%E5%AE%A42%E7%AC%AC01%E8%AF%9D_%E7%95%AA%E5%89%A7%20-%20%E5%97%B7%E5%91%9C%E5%8A%A8%E6%BC%AB-cL2mWCVE4ODSqFF4ncy7zC72ZSMOzW.mp4
+[INFO] 2026-05-15 22:26:28 - video:34 - Video analysis requested, URL: https://lsi9tchulfhhv5fp.public.blob.vercel-storage.com/be08450a-%E6%AC%A2%E8%BF...
+[ERROR] 2026-05-15 22:27:23 - video:55 - Video analysis failed: Xiaomi Video API error (400): {"error":{"code":"400","message":"Multimodal data is corrupted or cannot be processed.","param":"","type":"BadRequestError"}}
+Traceback (most recent call last):
+  File "D:\work\语音转换助手-vercel\api\video.py", line 45, in handler
+    result = _call_video_analysis(blob_url, api_key, base_url)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\work\语音转换助手-vercel\api\video.py", line 100, in _call_video_analysis
+    raise Exception(f"Xiaomi Video API error ({response.status_code}): {response.text}")
+Exception: Xiaomi Video API error (400): {"error":{"code":"400","message":"Multimodal data is corrupted or cannot be processed.","param":"","type":"BadRequestError"}}
+[INFO] 2026-05-15 22:27:23 - logger:51 - API Call: {"endpoint": "/api/video", "timestamp": "2026-05-15T22:27:23.924704", "request": {"url": "https://lsi9tchulfhhv5fp.public.blob.vercel-storage.com/be08450a-%E6%AC%A2%E8%BF"}, "error": "Xiaomi Video API error (400): {\"error\":{\"code\":\"400\",\"message\":\"Multimodal data is corrupted or cannot be processed.\",\"param\":\"\",\"type\":\"BadRequestError\"}}", "duration_ms": 55689.79549407959}
+[INFO] 2026-05-15 22:36:47 - blob_upload:15 - Blob upload requested, content-type: multipart/form-data; boundary=------------------------ZzbLm7eZ96fe2yhUEqrCuX
+[INFO] 2026-05-15 22:36:47 - blob_upload:50 - File parsed: test_video.mp4, size=730 bytes
+[INFO] 2026-05-15 22:36:49 - blob_upload:57 - Blob uploaded OK: https://lsi9tchulfhhv5fp.public.blob.vercel-storage.com/394288ae-test_video-98emKPulfe21r4Hi1gdUZlcmxCWR5N.mp4
+[ERROR] 2026-05-15 22:37:11 - video:55 - Video analysis failed: Expecting property name enclosed in double quotes: line 1 column 2 (char 1)
+Traceback (most recent call last):
+  File "D:\work\语音转换助手-vercel\api\video.py", line 32, in handler
+    body = json.loads(request.body)
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Anaconda\Lib\json\__init__.py", line 346, in loads
+    return _default_decoder.decode(s)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Anaconda\Lib\json\decoder.py", line 337, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Anaconda\Lib\json\decoder.py", line 353, in raw_decode
+    obj, end = self.scan_once(s, idx)
+               ^^^^^^^^^^^^^^^^^^^^^^
+json.decoder.JSONDecodeError: Expecting property name enclosed in double quotes: line 1 column 2 (char 1)
+[INFO] 2026-05-15 22:37:11 - logger:51 - API Call: {"endpoint": "/api/video", "timestamp": "2026-05-15T22:37:11.816857", "request": {"url": "none"}, "error": "Expecting property name enclosed in double quotes: line 1 column 2 (char 1)", "duration_ms": 0.0}
+[ERROR] 2026-05-15 22:37:29 - video:55 - Video analysis failed: Expecting property name enclosed in double quotes: line 1 column 2 (char 1)
+Traceback (most recent call last):
+  File "D:\work\语音转换助手-vercel\api\video.py", line 32, in handler
+    body = json.loads(request.body)
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Anaconda\Lib\json\__init__.py", line 346, in loads
+    return _default_decoder.decode(s)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Anaconda\Lib\json\decoder.py", line 337, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Anaconda\Lib\json\decoder.py", line 353, in raw_decode
+    obj, end = self.scan_once(s, idx)
+               ^^^^^^^^^^^^^^^^^^^^^^
+json.decoder.JSONDecodeError: Expecting property name enclosed in double quotes: line 1 column 2 (char 1)
+[INFO] 2026-05-15 22:37:29 - logger:51 - API Call: {"endpoint": "/api/video", "timestamp": "2026-05-15T22:37:29.955255", "request": {"url": "none"}, "error": "Expecting property name enclosed in double quotes: line 1 column 2 (char 1)", "duration_ms": 0.0}
+[INFO] 2026-05-15 22:37:42 - video:34 - Video analysis requested, URL: https://lsi9tchulfhhv5fp.public.blob.vercel-storage.com/394288ae-test_video-98em...
+[ERROR] 2026-05-15 22:37:44 - video:55 - Video analysis failed: Xiaomi Video API error (400): {"error":{"code":"400","message":"Multimodal data is corrupted or cannot be processed.","param":"","type":"BadRequestError"}}
+Traceback (most recent call last):
+  File "D:\work\语音转换助手-vercel\api\video.py", line 45, in handler
+    result = _call_video_analysis(blob_url, api_key, base_url)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\work\语音转换助手-vercel\api\video.py", line 100, in _call_video_analysis
+    raise Exception(f"Xiaomi Video API error ({response.status_code}): {response.text}")
+Exception: Xiaomi Video API error (400): {"error":{"code":"400","message":"Multimodal data is corrupted or cannot be processed.","param":"","type":"BadRequestError"}}
+[INFO] 2026-05-15 22:37:44 - logger:51 - API Call: {"endpoint": "/api/video", "timestamp": "2026-05-15T22:37:44.308677", "request": {"url": "https://lsi9tchulfhhv5fp.public.blob.vercel-storage.com/394288ae-test_video-98em"}, "error": "Xiaomi Video API error (400): {\"error\":{\"code\":\"400\",\"message\":\"Multimodal data is corrupted or cannot be processed.\",\"param\":\"\",\"type\":\"BadRequestError\"}}", "duration_ms": 2096.381425857544}
+[INFO] 2026-05-15 22:38:47 - blob_upload:15 - Blob upload requested, content-type: multipart/form-data; boundary=------------------------1DMGMFnPQX8Dqk93269kGc
+[INFO] 2026-05-15 22:38:47 - blob_upload:50 - File parsed: test_video.mp4, size=730 bytes
+[INFO] 2026-05-15 22:38:51 - blob_upload:57 - Blob uploaded OK: https://lsi9tchulfhhv5fp.public.blob.vercel-storage.com/84d90101-test_video-tWyw0kA4XCaFFRMO1ErlCDkRxd4VNH.mp4
+[INFO] 2026-05-15 22:39:03 - video:34 - Video analysis requested, URL: https://lsi9tchulfhhv5fp.public.blob.vercel-storage.com/84d90101-test_video-tWyw...
+[ERROR] 2026-05-15 22:39:05 - video:55 - Video analysis failed: Xiaomi Video API error (400): {"error":{"code":"400","message":"Multimodal data is corrupted or cannot be processed.","param":"","type":"BadRequestError"}}
+Traceback (most recent call last):
+  File "D:\work\语音转换助手-vercel\api\video.py", line 45, in handler
+    result = _call_video_analysis(blob_url, api_key, base_url)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\work\语音转换助手-vercel\api\video.py", line 100, in _call_video_analysis
+    raise Exception(f"Xiaomi Video API error ({response.status_code}): {response.text}")
+Exception: Xiaomi Video API error (400): {"error":{"code":"400","message":"Multimodal data is corrupted or cannot be processed.","param":"","type":"BadRequestError"}}
+[INFO] 2026-05-15 22:39:05 - logger:51 - API Call: {"endpoint": "/api/video", "timestamp": "2026-05-15T22:39:05.454680", "request": {"url": "https://lsi9tchulfhhv5fp.public.blob.vercel-storage.com/84d90101-test_video-tWyw"}, "error": "Xiaomi Video API error (400): {\"error\":{\"code\":\"400\",\"message\":\"Multimodal data is corrupted or cannot be processed.\",\"param\":\"\",\"type\":\"BadRequestError\"}}", "duration_ms": 1861.3107204437256}
+[INFO] 2026-05-15 22:40:15 - video:34 - Video analysis requested, URL: https://example-files.cnbj1.mi-fds.com/example-files/video/video_example.mp4...
+[DEBUG] 2026-05-15 22:40:28 - video:104 - Xiaomi raw response: {
+  "tags": ["Vlog", "宠物"],
+  "summary": "视频展示了一只白色小猫在阳光明媚的室内窗边木地板上，喵喵叫的可爱瞬间。画面温馨，窗帘轻轻飘动，背景有绿植，捕捉了宠物日常的宁静片段。"
+}
+[INFO] 2026-05-15 22:40:28 - logger:51 - API Call: {"endpoint": "/api/video", "timestamp": "2026-05-15T22:40:28.776914", "request": {"url": "https://example-files.cnbj1.mi-fds.com/example-files/video/video_example.mp4"}, "response": "{'tags': ['Vlog', '宠物'], 'summary': '视频展示了一只白色小猫在阳光明媚的室内窗边木地板上，喵喵叫的可爱瞬间。画面温馨，窗帘轻轻飘动，背景有绿植，捕捉了宠物日常的宁静片段。'}", "duration_ms": 12996.593713760376}
+[INFO] 2026-05-15 22:40:28 - video:49 - Video analysis completed in 12997ms, tags=['Vlog', '宠物']
+[INFO] 2026-05-15 22:41:20 - blob_upload:15 - Blob upload requested, content-type: multipart/form-data; boundary=------------------------fGiQ46HyWPHJQdhVYUFZJZ
+[INFO] 2026-05-15 22:41:20 - blob_upload:50 - File parsed: test_video_official.mp4, size=796619 bytes
+[INFO] 2026-05-15 22:41:22 - blob_upload:57 - Blob uploaded OK: https://lsi9tchulfhhv5fp.public.blob.vercel-storage.com/7de9ad72-test_video_official-sg67tjRD14NkJPlIsgg8PhP4XWQYth.mp4
+[INFO] 2026-05-15 22:41:32 - video:34 - Video analysis requested, URL: https://lsi9tchulfhhv5fp.public.blob.vercel-storage.com/7de9ad72-test_video_offi...
+[DEBUG] 2026-05-15 22:41:42 - video:104 - Xiaomi raw response: {
+  "tags": ["生活片段", "宠物", "短片", "温馨家居"],
+  "summary": "一只蓝眼睛的白色小猫安静地坐在窗边的木地板上，阳光透过薄纱窗帘洒在它身上，背景中有一盆绿植，整个画面充满温馨宁静的家居氛围。"
+}
+[INFO] 2026-05-15 22:41:42 - logger:51 - API Call: {"endpoint": "/api/video", "timestamp": "2026-05-15T22:41:42.511455", "request": {"url": "https://lsi9tchulfhhv5fp.public.blob.vercel-storage.com/7de9ad72-test_video_offi"}, "response": "{'tags': ['生活片段', '宠物', '短片', '温馨家居'], 'summary': '一只蓝眼睛的白色小猫安静地坐在窗边的木地板上，阳光透过薄纱窗帘洒在它身上，背景中有一盆绿植，整个画面充满温馨宁静的家居氛围。'}", "duration_ms": 9673.693895339966}
+[INFO] 2026-05-15 22:41:42 - video:49 - Video analysis completed in 9674ms, tags=['生活片段', '宠物', '短片', '温馨家居']
+[INFO] 2026-05-15 22:45:51 - blob_upload:15 - Blob upload requested, content-type: multipart/form-data; boundary=----WebKitFormBoundaryg7t0Vf6P4Ar9Mnrd
+[INFO] 2026-05-15 22:45:51 - blob_upload:50 - File parsed: 任命助理.wav, size=269850 bytes
+[INFO] 2026-05-15 22:45:55 - blob_upload:57 - Blob uploaded OK: https://lsi9tchulfhhv5fp.public.blob.vercel-storage.com/0b3aa996-%E4%BB%BB%E5%91%BD%E5%8A%A9%E7%90%86-CfkPal9MQIl6H1XsUroUhvaQL5xQHq.wav
+[INFO] 2026-05-15 22:45:55 - audio:34 - Audio analysis requested, URL: https://lsi9tchulfhhv5fp.public.blob.vercel-storage.com/0b3aa996-%E4%BB%BB%E5%91...
+[DEBUG] 2026-05-15 22:46:02 - audio:102 - Xiaomi raw response: ```json
+{
+  "tags": ["台词", "日语", "游戏", "角色语音", "问候"],
+  "summary": "音频为日语角色台词，内容是「ドクター、お仕事お疲れ様です」，意为「博士，工作辛苦了」。这是一句问候语，来自游戏《明日方舟》，是游戏角色对玩家（博士）的问候语音，语气温柔礼貌，带有感谢和关心的意味。"
+}
+```
+[INFO] 2026-05-15 22:46:02 - logger:51 - API Call: {"endpoint": "/api/audio", "timestamp": "2026-05-15T22:46:02.140118", "request": {"url": "https://lsi9tchulfhhv5fp.public.blob.vercel-storage.com/0b3aa996-%E4%BB%BB%E5%91"}, "response": "{'tags': ['台词', '日语', '游戏', '角色语音', '问候'], 'summary': '音频为日语角色台词，内容是「ドクター、お仕事お疲れ様です」，意为「博士，工作辛苦了」。这是一句问候语，来自游戏《明日方舟》，是游戏角色对玩家（博士）的问候语音，语气温柔礼貌，带有感谢和关心的意味。'}", "duration_ms": 6864.175796508789}
+[INFO] 2026-05-15 22:46:02 - audio:49 - Audio analysis completed in 6864ms, tags=['台词', '日语', '游戏', '角色语音', '问候']
+[INFO] 2026-05-15 23:20:58 - blob_upload:15 - Blob upload requested, content-type: multipart/form-data; boundary=----WebKitFormBoundaryPav5zdx6RMKZ7qRZ
+[INFO] 2026-05-15 23:20:58 - blob_upload:50 - File parsed: 欢迎来到实力至上主义教室 第二季_欢迎来到实力至上主义教室2第01话_番剧 - 嗷呜动漫.mp4, size=217467954 bytes
+[INFO] 2026-05-15 23:22:25 - blob_upload:57 - Blob uploaded OK: https://lsi9tchulfhhv5fp.public.blob.vercel-storage.com/ad6fd8b0-%E6%AC%A2%E8%BF%8E%E6%9D%A5%E5%88%B0%E5%AE%9E%E5%8A%9B%E8%87%B3%E4%B8%8A%E4%B8%BB%E4%B9%89%E6%95%99%E5%AE%A4%20%E7%AC%AC%E4%BA%8C%E5%AD%A3_%E6%AC%A2%E8%BF%8E%E6%9D%A5%E5%88%B0%E5%AE%9E%E5%8A%9B%E8%87%B3%E4%B8%8A%E4%B8%BB%E4%B9%89%E6%95%99%E5%AE%A42%E7%AC%AC01%E8%AF%9D_%E7%95%AA%E5%89%A7%20-%20%E5%97%B7%E5%91%9C%E5%8A%A8%E6%BC%AB-p6xJq0fpaojfSkda6oTNd8WRSzWRJD.mp4
+[INFO] 2026-05-15 23:22:25 - video:42 - Video analysis requested, URL: https://lsi9tchulfhhv5fp.public.blob.vercel-storage.com/ad6fd8b0-%E6%AC%A2%E8%BF..., duration=1421.268005s, fps=0.20
+[DEBUG] 2026-05-15 23:23:26 - video:120 - Xiaomi raw response: 
+[WARNING] 2026-05-15 23:23:26 - video:133 - Failed to parse JSON from response, returning raw content
+[INFO] 2026-05-15 23:23:26 - logger:51 - API Call: {"endpoint": "/api/video", "timestamp": "2026-05-15T23:23:26.299551", "request": {"url": "https://lsi9tchulfhhv5fp.public.blob.vercel-storage.com/ad6fd8b0-%E6%AC%A2%E8%BF"}, "response": "{'tags': [], 'summary': ''}", "duration_ms": 60476.84860229492}
+[INFO] 2026-05-15 23:23:26 - video:57 - Video analysis completed in 60477ms, tags=[]
+[INFO] 2026-05-15 23:30:30 - blob_upload:15 - Blob upload requested, content-type: multipart/form-data; boundary=----WebKitFormBoundaryQrKoG3Fs5N5xFVdI
+[INFO] 2026-05-15 23:30:30 - blob_upload:50 - File parsed: 欢迎来到实力至上主义教室 第二季_欢迎来到实力至上主义教室2第01话_番剧 - 嗷呜动漫.mp4, size=217467954 bytes
+[INFO] 2026-05-15 23:32:25 - blob_upload:57 - Blob uploaded OK: https://lsi9tchulfhhv5fp.public.blob.vercel-storage.com/975b17b4-%E6%AC%A2%E8%BF%8E%E6%9D%A5%E5%88%B0%E5%AE%9E%E5%8A%9B%E8%87%B3%E4%B8%8A%E4%B8%BB%E4%B9%89%E6%95%99%E5%AE%A4%20%E7%AC%AC%E4%BA%8C%E5%AD%A3_%E6%AC%A2%E8%BF%8E%E6%9D%A5%E5%88%B0%E5%AE%9E%E5%8A%9B%E8%87%B3%E4%B8%8A%E4%B8%BB%E4%B9%89%E6%95%99%E5%AE%A42%E7%AC%AC01%E8%AF%9D_%E7%95%AA%E5%89%A7%20-%20%E5%97%B7%E5%91%9C%E5%8A%A8%E6%BC%AB-oFH8mcwLg8laKYOqAqn72u4Ne0JL5d.mp4
+[INFO] 2026-05-15 23:32:25 - video:55 - Video analysis requested, URL: https://lsi9tchulfhhv5fp.public.blob.vercel-storage.com/975b17b4-%E6%AC%A2%E8%BF..., duration=1421.268005s, fps=0.1, resolution=max
+[DEBUG] 2026-05-15 23:33:30 - video:136 - Xiaomi raw response: 
+[WARNING] 2026-05-15 23:33:30 - video:149 - Failed to parse JSON from response, returning raw content
+[INFO] 2026-05-15 23:33:30 - logger:51 - API Call: {"endpoint": "/api/video", "timestamp": "2026-05-15T23:33:30.823839", "request": {"url": "https://lsi9tchulfhhv5fp.public.blob.vercel-storage.com/975b17b4-%E6%AC%A2%E8%BF"}, "response": "{'tags': [], 'summary': ''}", "duration_ms": 65392.378091812134}
+[INFO] 2026-05-15 23:33:30 - video:73 - Video analysis completed in 65392ms, tags=[]
+[INFO] 2026-05-15 23:34:23 - blob_upload:15 - Blob upload requested, content-type: multipart/form-data; boundary=----WebKitFormBoundaryacKMMQieefO51SDs
+[INFO] 2026-05-15 23:34:23 - blob_upload:50 - File parsed: 任命助理.wav, size=269850 bytes
+[INFO] 2026-05-15 23:34:26 - blob_upload:57 - Blob uploaded OK: https://lsi9tchulfhhv5fp.public.blob.vercel-storage.com/ce375582-%E4%BB%BB%E5%91%BD%E5%8A%A9%E7%90%86-2on0hLAJmBbon2k2RivneBW6Zjp6Pk.wav
+[INFO] 2026-05-15 23:34:26 - audio:34 - Audio analysis requested, URL: https://lsi9tchulfhhv5fp.public.blob.vercel-storage.com/ce375582-%E4%BB%BB%E5%91...
+[DEBUG] 2026-05-15 23:34:38 - audio:110 - Xiaomi raw response: {
+  "tags": ["台词", "对话"],
+  "summary": "音频是一段日语语音片段，内容为‘お疲れ様、お仕事お疲れ
+[WARNING] 2026-05-15 23:34:38 - audio:123 - Failed to parse JSON from response, returning raw content
+[INFO] 2026-05-15 23:34:38 - logger:51 - API Call: {"endpoint": "/api/audio", "timestamp": "2026-05-15T23:34:38.973570", "request": {"url": "https://lsi9tchulfhhv5fp.public.blob.vercel-storage.com/ce375582-%E4%BB%BB%E5%91"}, "response": "{'tags': [], 'summary': '{\\n  \"tags\": [\"台词\", \"对话\"],\\n  \"summary\": \"音频是一段日语语音片段，内容为‘お疲れ様、お仕事お疲れ'}", "duration_ms": 12897.760152816772}
+[INFO] 2026-05-15 23:34:38 - audio:49 - Audio analysis completed in 12898ms, tags=[]
+[INFO] 2026-05-15 23:40:00 - blob_upload:15 - Blob upload requested, content-type: multipart/form-data; boundary=----WebKitFormBoundaryCoALX1wgz4O29M1W
+[INFO] 2026-05-15 23:40:00 - blob_upload:50 - File parsed: 短视频入门教学，快速提升电影感的拍摄技巧-摄影视频-搜狐视频.mp4, size=2001529 bytes
+[INFO] 2026-05-15 23:40:04 - blob_upload:57 - Blob uploaded OK: https://lsi9tchulfhhv5fp.public.blob.vercel-storage.com/bca19ecc-%E7%9F%AD%E8%A7%86%E9%A2%91%E5%85%A5%E9%97%A8%E6%95%99%E5%AD%A6%EF%BC%8C%E5%BF%AB%E9%80%9F%E6%8F%90%E5%8D%87%E7%94%B5%E5%BD%B1%E6%84%9F%E7%9A%84%E6%8B%8D%E6%91%84%E6%8A%80%E5%B7%A7-%E6%91%84%E5%BD%B1%E8%A7%86%E9%A2%91-%E6%90%9C%E7%8B%90%E8%A7%86%E9%A2%91-RaZVr5cmcYCuUZYqetzXqcG8ZBml9m.mp4
+[INFO] 2026-05-15 23:40:04 - video:56 - Video analysis requested, URL: https://lsi9tchulfhhv5fp.public.blob.vercel-storage.com/bca19ecc-%E7%9F%AD%E8%A7..., duration=15.4s, fps=2.0, resolution=default
+[DEBUG] 2026-05-15 23:40:24 - video:137 - Xiaomi raw response: {
+  "tags": ["宣传片", "剧集"],
+  "summary": "这段视频是电视剧《都是她的错》第一季的宣传片段。开头，Marissa微笑着到访邻居处接儿子Milo，却被告知孩子不在。随后画面切换，显示Milo已失踪近五小时，警方介入调查，气氛紧张。标题和'全网独播'字样暗示这是一部悬疑剧集的预告，旨在吸引观众关注。"
+}
+[INFO] 2026-05-15 23:40:24 - logger:51 - API Call: {"endpoint": "/api/video", "timestamp": "2026-05-15T23:40:24.728472", "request": {"url": "https://lsi9tchulfhhv5fp.public.blob.vercel-storage.com/bca19ecc-%E7%9F%AD%E8%A7"}, "response": "{'tags': ['宣传片', '剧集'], 'summary': \"这段视频是电视剧《都是她的错》第一季的宣传片段。开头，Marissa微笑着到访邻居处接儿子Milo，却被告知孩子不在。随后画面切换，显示Milo已失踪近五小时，警方介入调查，气氛紧张。标题和'全网独播'字样暗示这是一部悬疑剧集的预告，旨在吸引观众关注。\"}", "duration_ms": 20567.20733642578}
+[INFO] 2026-05-15 23:40:24 - video:74 - Video analysis completed in 20567ms, tags=['宣传片', '剧集']
+[INFO] 2026-05-15 23:41:35 - blob_upload:15 - Blob upload requested, content-type: multipart/form-data; boundary=----WebKitFormBoundaryIYeSR6kjlyXsV6J8
+[INFO] 2026-05-15 23:41:36 - blob_upload:50 - File parsed: 欢迎来到实力至上主义教室 第二季_欢迎来到实力至上主义教室2第08话_番剧 - 嗷呜动漫.mp4, size=215427604 bytes
+[INFO] 2026-05-15 23:43:15 - blob_upload:57 - Blob uploaded OK: https://lsi9tchulfhhv5fp.public.blob.vercel-storage.com/3c78ab0d-%E6%AC%A2%E8%BF%8E%E6%9D%A5%E5%88%B0%E5%AE%9E%E5%8A%9B%E8%87%B3%E4%B8%8A%E4%B8%BB%E4%B9%89%E6%95%99%E5%AE%A4%20%E7%AC%AC%E4%BA%8C%E5%AD%A3_%E6%AC%A2%E8%BF%8E%E6%9D%A5%E5%88%B0%E5%AE%9E%E5%8A%9B%E8%87%B3%E4%B8%8A%E4%B8%BB%E4%B9%89%E6%95%99%E5%AE%A42%E7%AC%AC08%E8%AF%9D_%E7%95%AA%E5%89%A7%20-%20%E5%97%B7%E5%91%9C%E5%8A%A8%E6%BC%AB-ntFdaAok7kBvJ0mZndUQYe0fG8kydV.mp4
+[INFO] 2026-05-15 23:43:15 - video:56 - Video analysis requested, URL: https://lsi9tchulfhhv5fp.public.blob.vercel-storage.com/3c78ab0d-%E6%AC%A2%E8%BF..., duration=1421.098005s, fps=0.1, resolution=max
+[ERROR] 2026-05-15 23:45:16 - video:80 - Video analysis failed: Xiaomi Video API error (400): {"error":{"code":"400","message":"Param Incorrect","param":"failed during process multi-modal data","type":""}}
+Traceback (most recent call last):
+  File "D:\work\语音转换助手-vercel\api\video.py", line 70, in handler
+    result = _call_video_analysis(blob_url, api_key, base_url, fps, media_resolution)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\work\语音转换助手-vercel\api\video.py", line 133, in _call_video_analysis
+    raise Exception(f"Xiaomi Video API error ({response.status_code}): {response.text}")
+Exception: Xiaomi Video API error (400): {"error":{"code":"400","message":"Param Incorrect","param":"failed during process multi-modal data","type":""}}
+[INFO] 2026-05-15 23:45:16 - logger:51 - API Call: {"endpoint": "/api/video", "timestamp": "2026-05-15T23:45:16.898710", "request": {"url": "https://lsi9tchulfhhv5fp.public.blob.vercel-storage.com/3c78ab0d-%E6%AC%A2%E8%BF"}, "error": "Xiaomi Video API error (400): {\"error\":{\"code\":\"400\",\"message\":\"Param Incorrect\",\"param\":\"failed during process multi-modal data\",\"type\":\"\"}}", "duration_ms": 120929.29220199585}
+[INFO] 2026-05-15 23:45:53 - blob_upload:15 - Blob upload requested, content-type: multipart/form-data; boundary=----WebKitFormBoundaryh7SnEGx4j85tC6gI
+[INFO] 2026-05-15 23:45:53 - blob_upload:50 - File parsed: 短视频入门教学，快速提升电影感的拍摄技巧-摄影视频-搜狐视频.mp4, size=2001529 bytes
+[ERROR] 2026-05-15 23:45:59 - blob_upload:62 - Blob upload failed: Vercel Blob returned 400: {"error":{"code":"bad_request","message":"Storage quota exceeded for Hobby plan (1GB maximum)"}}
+Traceback (most recent call last):
+  File "D:\work\语音转换助手-vercel\api\blob_upload.py", line 56, in handler
+    blob_url = _upload_to_blob(file_name, file_data, token)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\work\语音转换助手-vercel\api\blob_upload.py", line 82, in _upload_to_blob
+    raise Exception(f"Vercel Blob returned {response.status_code}: {response.text[:300]}")
+Exception: Vercel Blob returned 400: {"error":{"code":"bad_request","message":"Storage quota exceeded for Hobby plan (1GB maximum)"}}
+[INFO] 2026-05-15 23:46:23 - blob_upload:15 - Blob upload requested, content-type: multipart/form-data; boundary=----WebKitFormBoundarylgst8qb36OhutAYT
+[INFO] 2026-05-15 23:46:23 - blob_upload:50 - File parsed: 短视频入门教学，快速提升电影感的拍摄技巧-摄影视频-搜狐视频.mp4, size=2001529 bytes
+[ERROR] 2026-05-15 23:46:28 - blob_upload:62 - Blob upload failed: Vercel Blob returned 400: {"error":{"code":"bad_request","message":"Storage quota exceeded for Hobby plan (1GB maximum)"}}
+Traceback (most recent call last):
+  File "D:\work\语音转换助手-vercel\api\blob_upload.py", line 56, in handler
+    blob_url = _upload_to_blob(file_name, file_data, token)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\work\语音转换助手-vercel\api\blob_upload.py", line 82, in _upload_to_blob
+    raise Exception(f"Vercel Blob returned {response.status_code}: {response.text[:300]}")
+Exception: Vercel Blob returned 400: {"error":{"code":"bad_request","message":"Storage quota exceeded for Hobby plan (1GB maximum)"}}
+[INFO] 2026-05-15 23:52:56 - blob_upload:15 - Blob upload requested, content-type: multipart/form-data; boundary=----WebKitFormBoundaryUDJ77hBS0Ir7TAMd
+[INFO] 2026-05-15 23:52:56 - blob_upload:50 - File parsed: 短视频入门教学，快速提升电影感的拍摄技巧-摄影视频-搜狐视频.mp4, size=2001529 bytes
+[INFO] 2026-05-15 23:53:02 - blob_upload:57 - Blob uploaded OK: https://lsi9tchulfhhv5fp.public.blob.vercel-storage.com/1c4c2c41-%E7%9F%AD%E8%A7%86%E9%A2%91%E5%85%A5%E9%97%A8%E6%95%99%E5%AD%A6%EF%BC%8C%E5%BF%AB%E9%80%9F%E6%8F%90%E5%8D%87%E7%94%B5%E5%BD%B1%E6%84%9F%E7%9A%84%E6%8B%8D%E6%91%84%E6%8A%80%E5%B7%A7-%E6%91%84%E5%BD%B1%E8%A7%86%E9%A2%91-%E6%90%9C%E7%8B%90%E8%A7%86%E9%A2%91-WbPTL6FJJ14hiGWfd3pTadXRrQasP0.mp4
+[INFO] 2026-05-15 23:53:02 - video:56 - Video analysis requested, URL: https://lsi9tchulfhhv5fp.public.blob.vercel-storage.com/1c4c2c41-%E7%9F%AD%E8%A7..., duration=15.4s, fps=2.0, resolution=default
+[DEBUG] 2026-05-15 23:53:13 - video:137 - Xiaomi raw response: {
+  "tags": ["宣传片", "剧集", "悬疑"],
+  "summary": "这是《都是她的错 第一季》的宣传预告片，玛丽莎前往友人家接儿子迈洛，却被告知孩子不在此处，此时迈洛已失踪近五小时，剧情围绕孩子失踪的谜团展开，呈现出相关人物的紧张与忧虑。"
+}
+[INFO] 2026-05-15 23:53:13 - logger:51 - API Call: {"endpoint": "/api/video", "timestamp": "2026-05-15T23:53:13.514058", "request": {"url": "https://lsi9tchulfhhv5fp.public.blob.vercel-storage.com/1c4c2c41-%E7%9F%AD%E8%A7"}, "response": "{'tags': ['宣传片', '剧集', '悬疑'], 'summary': '这是《都是她的错 第一季》的宣传预告片，玛丽莎前往友人家接儿子迈洛，却被告知孩子不在此处，此时迈洛已失踪近五小时，剧情围绕孩子失踪的谜团展开，呈现出相关人物的紧张与忧虑。'}", "duration_ms": 11400.427341461182}
+[INFO] 2026-05-15 23:53:13 - video:74 - Video analysis completed in 11400ms, tags=['宣传片', '剧集', '悬疑']
+[ERROR] 2026-05-15 23:53:16 - blob_cleanup:29 - Blob cleanup failed: 405  for https://lsi9tchulfhhv5fp.public.blob.vercel-storage.com/1c4c2c41-%E7%9F%AD%E8%A7...
+[INFO] 2026-05-15 23:54:17 - blob_upload:15 - Blob upload requested, content-type: multipart/form-data; boundary=------------------------ukIxq7bF4uftAZAafD9mwr
+[INFO] 2026-05-15 23:54:17 - blob_upload:50 - File parsed: test_cleanup.txt, size=23 bytes
+[INFO] 2026-05-15 23:54:18 - blob_upload:57 - Blob uploaded OK: https://lsi9tchulfhhv5fp.public.blob.vercel-storage.com/56d2af4d-test_cleanup-3E5OkIeDuqjJcnQ2pRjpR63YSZN3bN.txt
+[DEBUG] 2026-05-15 23:54:45 - blob_cleanup:48 - Blob cleaned up: https://lsi9tchulfhhv5fp.public.blob.vercel-storage.com/56d2af4d-test_cleanup-3E...
+[INFO] 2026-05-15 23:55:37 - blob_upload:15 - Blob upload requested, content-type: multipart/form-data; boundary=----WebKitFormBoundaryNs0iJA6ky5YBY3Yk
+[INFO] 2026-05-15 23:55:37 - blob_upload:50 - File parsed: 短视频入门教学，快速提升电影感的拍摄技巧-摄影视频-搜狐视频.mp4, size=2001529 bytes
+[INFO] 2026-05-15 23:55:43 - blob_upload:57 - Blob uploaded OK: https://lsi9tchulfhhv5fp.public.blob.vercel-storage.com/ecc132c6-%E7%9F%AD%E8%A7%86%E9%A2%91%E5%85%A5%E9%97%A8%E6%95%99%E5%AD%A6%EF%BC%8C%E5%BF%AB%E9%80%9F%E6%8F%90%E5%8D%87%E7%94%B5%E5%BD%B1%E6%84%9F%E7%9A%84%E6%8B%8D%E6%91%84%E6%8A%80%E5%B7%A7-%E6%91%84%E5%BD%B1%E8%A7%86%E9%A2%91-%E6%90%9C%E7%8B%90%E8%A7%86%E9%A2%91-vd1HKFSQ4UZSGGwjqHlAMFx7iPcEJ2.mp4
+[INFO] 2026-05-15 23:55:43 - video:56 - Video analysis requested, URL: https://lsi9tchulfhhv5fp.public.blob.vercel-storage.com/ecc132c6-%E7%9F%AD%E8%A7..., duration=15.4s, fps=2.0, resolution=default
+[DEBUG] 2026-05-15 23:55:58 - video:137 - Xiaomi raw response: ```json
+{
+  "tags": ["预告片", "悬疑", "电视剧", "剧情"],
+  "summary": "这是悬疑剧《都是她的错》第一季的预告片。片段展示了一位母亲玛丽莎去接儿子迈洛时，遭遇对方否认孩子的存在，随后引出迈洛失踪数小时的惊悚情节，画面中穿插着家人的焦虑、侦探的调查以及复杂的人物关系，营造出强烈的悬疑氛围。"
+}
+```
+[INFO] 2026-05-15 23:55:58 - logger:51 - API Call: {"endpoint": "/api/video", "timestamp": "2026-05-15T23:55:58.688193", "request": {"url": "https://lsi9tchulfhhv5fp.public.blob.vercel-storage.com/ecc132c6-%E7%9F%AD%E8%A7"}, "response": "{'tags': ['预告片', '悬疑', '电视剧', '剧情'], 'summary': '这是悬疑剧《都是她的错》第一季的预告片。片段展示了一位母亲玛丽莎去接儿子迈洛时，遭遇对方否认孩子的存在，随后引出迈洛失踪数小时的惊悚情节，画面中穿插着家人的焦虑、侦探的调查以及复杂的人物关系，营造出强烈的悬疑氛围。'}", "duration_ms": 14708.360433578491}
+[INFO] 2026-05-15 23:55:58 - video:74 - Video analysis completed in 14708ms, tags=['预告片', '悬疑', '电视剧', '剧情']
+[DEBUG] 2026-05-15 23:56:00 - blob_cleanup:48 - Blob cleaned up: https://lsi9tchulfhhv5fp.public.blob.vercel-storage.com/ecc132c6-%E7%9F%AD%E8%A7...
+[INFO] 2026-05-15 23:58:30 - blob_upload:15 - Blob upload requested, content-type: multipart/form-data; boundary=----WebKitFormBoundarykGCobf0myXjnYHwN
+[INFO] 2026-05-15 23:58:30 - blob_upload:50 - File parsed: 任命助理.wav, size=269850 bytes
+[INFO] 2026-05-15 23:58:34 - blob_upload:57 - Blob uploaded OK: https://lsi9tchulfhhv5fp.public.blob.vercel-storage.com/ee62eb00-%E4%BB%BB%E5%91%BD%E5%8A%A9%E7%90%86-V7YRxI6Oiv7K6zLk3pzfIt1tNfX6Po.wav
+[INFO] 2026-05-15 23:58:34 - audio:35 - Audio analysis requested, URL: https://lsi9tchulfhhv5fp.public.blob.vercel-storage.com/ee62eb00-%E4%BB%BB%E5%91...
+[DEBUG] 2026-05-15 23:58:42 - audio:111 - Xiaomi raw response: {
+  "tags": ["台词", "问候", "游戏角色"],
+  "summary": "这段音频包含一段日文配音，一位女性角色礼貌地称呼对方为“医生”（Doctor），并对他的辛勤工作表示慰问。语气亲切、温柔，具有典型的游戏或动漫角色互动风格。"
+}
+[INFO] 2026-05-15 23:58:42 - logger:51 - API Call: {"endpoint": "/api/audio", "timestamp": "2026-05-15T23:58:42.128474", "request": {"url": "https://lsi9tchulfhhv5fp.public.blob.vercel-storage.com/ee62eb00-%E4%BB%BB%E5%91"}, "response": "{'tags': ['台词', '问候', '游戏角色'], 'summary': '这段音频包含一段日文配音，一位女性角色礼貌地称呼对方为“医生”（Doctor），并对他的辛勤工作表示慰问。语气亲切、温柔，具有典型的游戏或动漫角色互动风格。'}", "duration_ms": 7450.8349895477295}
+[INFO] 2026-05-15 23:58:42 - audio:50 - Audio analysis completed in 7451ms, tags=['台词', '问候', '游戏角色']
+[INFO] 2026-05-15 23:58:44 - blob_cleanup:48 - Blob cleaned up: https://lsi9tchulfhhv5fp.public.blob.vercel-storage.com/ee62eb00-%E4%BB%BB%E5%91...

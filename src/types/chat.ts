@@ -1,3 +1,10 @@
+export interface MediaAnalysis {
+  tags: string[];
+  summary: string;
+  mediaType: 'video' | 'audio';
+  fileName: string;
+}
+
 export interface ChatMessage {
   id: string;
   role: 'user' | 'assistant';
@@ -10,6 +17,8 @@ export interface ChatMessage {
   styleTags?: string;
   audioTags?: string[];
   isProcessing?: boolean;
+  type?: 'message' | 'analysis';
+  analysis?: MediaAnalysis;
 }
 
 export interface Conversation {
@@ -26,7 +35,7 @@ export interface ChatState {
   isProcessing: boolean;
 }
 
-export type InputMode = 'text' | 'image';
+export type InputMode = 'text' | 'image' | 'video' | 'audio';
 
 export interface SettingsState {
   inputMode: InputMode;
@@ -40,5 +49,6 @@ export interface SettingsState {
   selectedProcessing: string;
   customVoiceFile: File | null;
   customVoiceName: string;
+  mediaAnalysisMode: 'scene' | 'standalone';
   drawerOpen: boolean;
 }
