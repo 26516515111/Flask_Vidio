@@ -1,14 +1,72 @@
 """Vercel Serverless Function: Video content analysis."""
 import ast
+import base64
 import json
 import os
 import re
 import time
-from typing import Optional
+from typing import Optional, Tuple
 
 import httpx
 from logger import logger, log_api_call
 from blob_cleanup import delete_blob
+
+
+# Video → MIME type mapping for base64 data URL construction
+_VIDEO_EXT_MIME = {
+    ".mp4": "video/mp4",
+    ".mov": "video/quicktime",
+    ".avi": "video/x-msvideo",
+    ".wmv": "video/x-ms-wmv",
+    ".webm": "video/webm",
+    ".mkv": "video/x-matroska",
+}
+
+# MiMo API limit: base64-encoded string ≤ 50 MB.
+# base64 is ~4/3 of original, so cap original at ~35 MB (safe margin).
+_MAX_ORIGINAL_BYTES = 35 * 1024 * 1024  # 35 MB
+
+
+def _download_video_to_base64(video_url: str) -> Tuple[str, str]:
+    """Download video from Vercel Blob and return (data_url, mime_type).
+
+    Uses base64 encoding because Xiaomi MiMo API servers cannot reach
+    Vercel Blob public URLs from within China's network. Instead, we
+    download in the Vercel function (same infra) and pass inline data.
+
+    Returns:
+        (data_url, mime_type) — e.g. ("data:video/mp4;base64,...", "video/mp4")
+    """
+    # Derive MIME type from URL path extension
+    path = video_url.split("?")[0].split("#")[0]  # strip query/hash
+    _, ext = os.path.splitext(path)
+    ext = ext.lower()
+    mime_type = _VIDEO_EXT_MIME.get(ext, "video/mp4")
+
+    logger.info(f"Downloading video from blob for base64 encoding, mime={mime_type}")
+
+    with httpx.Client(timeout=120.0, follow_redirects=True) as client:
+        resp = client.get(video_url)
+        if resp.status_code != 200:
+            raise Exception(
+                f"Failed to download video from blob: HTTP {resp.status_code}"
+            )
+        video_bytes = resp.content
+
+    size_mb = len(video_bytes) / (1024 * 1024)
+    logger.info(f"Downloaded {size_mb:.1f} MB, encoding to base64")
+
+    if len(video_bytes) > _MAX_ORIGINAL_BYTES:
+        raise Exception(
+            f"Video too large for MiMo base64 input ({size_mb:.1f} MB). "
+            f"Please use a video under 35 MB."
+        )
+
+    encoded = base64.b64encode(video_bytes).decode("ascii")
+    data_url = f"data:{mime_type};base64,{encoded}"
+    logger.info(f"Base64 encoded OK, data URL length={len(data_url)} chars")
+
+    return data_url, mime_type
 
 
 VIDEO_PROMPT = """分析这个视频的视觉和音频内容。必须返回严格的JSON格式，不要添加任何其他文字、解释或markdown标记。
@@ -141,12 +199,17 @@ def handler(request):
 
 
 def _call_video_analysis(video_url: str, api_key: str, base_url: str, fps: float = 2.0, media_resolution: str = "default") -> dict:
-    """Call Xiaomi MiMo V2.5 video understanding API."""
-    url = f"{base_url}/chat/completions"
+    """Call Xiaomi MiMo V2.5 video understanding API.
+
+    Downloads video from Vercel Blob and passes as base64 data URL because
+    MiMo API servers (in China) cannot reach Vercel Blob public URLs.
+    """
+    data_url, _ = _download_video_to_base64(video_url)
+    api_url = f"{base_url}/chat/completions"
 
     with httpx.Client(timeout=300.0) as client:
         response = client.post(
-            url,
+            api_url,
             headers={
                 "api-key": api_key,
                 "Content-Type": "application/json",
@@ -167,7 +230,7 @@ def _call_video_analysis(video_url: str, api_key: str, base_url: str, fps: float
                         "content": [
                             {
                                 "type": "video_url",
-                                "video_url": {"url": video_url},
+                                "video_url": {"url": data_url},
                                 "fps": fps,
                                 "media_resolution": media_resolution,
                             },
