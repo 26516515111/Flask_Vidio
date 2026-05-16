@@ -136,6 +136,12 @@ const SettingsDrawer: React.FC<SettingsDrawerProps> = ({ open, onClose, onConfir
     scene?: string;
     emotion?: string;
     voice_style?: string;
+    music?: import('../services/audioApi').MusicInfo;
+    layers?: import('../services/audioApi').AudioLayer[];
+    dialogue?: import('../services/audioApi').DialogueInfo;
+    audio?: import('../services/videoApi').AudioInfo;
+    visual?: import('../services/videoApi').VisualInfo;
+    scenes?: import('../services/videoApi').SceneInfo[];
   } | null>(null);
   const [mediaLoading, setMediaLoading] = useState(false);
 

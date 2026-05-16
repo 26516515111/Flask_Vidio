@@ -22,7 +22,15 @@
 }
 
 @media (max-width: 768px) {
+  .app {
+    position: relative;
+  }
+
   .main {
     width: 100%;
+  }
+
+  .chatArea {
+    padding-bottom: var(--spacing-sm);
   }
 }

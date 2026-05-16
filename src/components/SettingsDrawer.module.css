@@ -316,3 +316,28 @@
   font-weight: 500;
   white-space: nowrap;
 }
+
+/* ── Mobile ── */
+@media (max-width: 768px) {
+  .section {
+    margin-bottom: 16px;
+  }
+
+  .emotionGrid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 6px;
+  }
+
+  .emotionItem {
+    padding: 8px 6px;
+    font-size: 12px;
+  }
+
+  .ocrActions {
+    flex-direction: column;
+  }
+
+  .ocrActions button {
+    width: 100%;
+  }
+}

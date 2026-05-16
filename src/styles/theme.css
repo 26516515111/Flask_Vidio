@@ -214,3 +214,15 @@
   background: rgba(59, 130, 246, 0.35);
   color: #ffffff;
 }
+
+/* ---- Mobile Breakpoint ---- */
+@media (max-width: 768px) {
+  :root {
+    --sidebar-width: 280px;
+    --header-height: 48px;
+    --spacing-lg: 16px;
+    --spacing-xl: 24px;
+    --spacing-2xl: 32px;
+    --spacing-3xl: 48px;
+  }
+}

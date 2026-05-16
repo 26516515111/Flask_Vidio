@@ -352,8 +352,39 @@
     padding: var(--spacing-xs) var(--spacing-md) var(--spacing-sm);
   }
 
+  .inner {
+    gap: 8px;
+  }
+
+  .inputRow {
+    gap: var(--spacing-xs);
+  }
+
+  .textarea {
+    min-height: 40px;
+    max-height: 120px;
+    padding: 10px 12px;
+    font-size: 14px;
+  }
+
+  .sendBtn {
+    width: 40px;
+    height: 40px;
+  }
+
   .toolbar {
     flex-wrap: wrap;
+    gap: var(--spacing-xs);
+  }
+
+  .toolbarLeft {
+    gap: 4px;
+  }
+
+  .polishBtn,
+  .settingsBtn {
+    padding: 4px 8px;
+    font-size: 11px;
   }
 
   .activeTags {
@@ -363,10 +394,5 @@
   .activeTag {
     padding: 4px 10px;
     font-size: 11px;
-  }
-
-  .sendBtn {
-    width: 40px;
-    height: 40px;
   }
 }

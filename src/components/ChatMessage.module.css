@@ -307,6 +307,10 @@
 
 /* Mobile adjustments */
 @media (max-width: 768px) {
+  .messageRow {
+    padding: 0 var(--spacing-xs);
+  }
+
   .avatar {
     width: 28px;
     height: 28px;
@@ -317,7 +321,34 @@
     max-width: 85%;
   }
 
+  .bubble {
+    padding: var(--spacing-sm) var(--spacing-md);
+  }
+
   .content {
     font-size: 13px;
+    line-height: 1.6;
+  }
+
+  .analysisContent {
+    padding: var(--spacing-xs);
+  }
+
+  .analysisHeader {
+    font-size: 13px;
+  }
+
+  .analysisSummary {
+    font-size: 12px;
+  }
+
+  .audioPlayer {
+    padding: var(--spacing-xs) var(--spacing-sm);
+  }
+
+  .audioBtn {
+    width: 30px;
+    height: 30px;
+    font-size: 12px;
   }
 }

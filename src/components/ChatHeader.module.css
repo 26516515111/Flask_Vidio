@@ -161,10 +161,35 @@
   white-space: nowrap;
 }
 
+.mobileMenuBtn {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-sm);
+  border: none;
+  background: transparent;
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  position: absolute;
+  left: var(--spacing-md);
+}
+
+.mobileMenuBtn:hover {
+  color: var(--color-text-primary);
+  background: var(--color-bg-hover);
+}
+
 @media (max-width: 768px) {
+  .mobileMenuBtn {
+    display: flex;
+  }
+
   .header {
     padding: 0 var(--spacing-md);
-    padding-left: 56px; /* Space for mobile sidebar toggle */
+    padding-left: 52px;
   }
 
   .logoText {
