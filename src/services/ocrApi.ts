@@ -1,11 +1,9 @@
 import api from './api';
 
 export const ocrApi = {
-  extractText: async (file: File) => {
-    const formData = new FormData();
-    formData.append('file', file);
-
-    const response = await api.post('/ocr', formData);
+  /** Extract text from image via Blob URL */
+  extractText: async (imageUrl: string) => {
+    const response = await api.post('/ocr', { url: imageUrl });
     return response.data;
   },
 };

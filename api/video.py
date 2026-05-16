@@ -187,9 +187,20 @@ def _call_video_analysis(video_url: str, api_key: str, base_url: str, fps: float
             raise Exception(f"Xiaomi Video API error ({response.status_code}): {response.text}")
 
         result = response.json()
-        content = result["choices"][0]["message"]["content"]
-        logger.debug(f"Xiaomi raw response: {content[:200]}")
+        logger.debug(f"Xiaomi raw response: {result}")
 
+        # Check if response has valid content
+        choices = result.get("choices", [])
+        if not choices:
+            logger.warning("No choices in API response")
+            return {"tags": [], "summary": "", "characters": [], "scene": "", "emotion": "", "voice_style": "", "audio": {"detected": False, "music": {"detected": False, "genre": "", "tempo": "", "instruments": [], "mood": ""}, "dialogue": {"detected": False, "speakers": [], "language": "", "content_summary": ""}, "layers": []}, "visual": {"style": "", "color_tone": "", "camera_movement": "", "lighting": "", "composition": ""}, "scenes": []}
+
+        content = choices[0].get("message", {}).get("content", "")
+        if not content:
+            logger.warning("Empty content in API response")
+            return {"tags": [], "summary": "", "characters": [], "scene": "", "emotion": "", "voice_style": "", "audio": {"detected": False, "music": {"detected": False, "genre": "", "tempo": "", "instruments": [], "mood": ""}, "dialogue": {"detected": False, "speakers": [], "language": "", "content_summary": ""}, "layers": []}, "visual": {"style": "", "color_tone": "", "camera_movement": "", "lighting": "", "composition": ""}, "scenes": []}
+
+        logger.debug(f"Xiaomi content: {content[:200]}")
         return _parse_analysis_json(content)
 
 

@@ -150,7 +150,9 @@ const SettingsDrawer: React.FC<SettingsDrawerProps> = ({ open, onClose, onConfir
     setUploadedFile({ uid: file.name, name: file.name, status: 'uploading' });
 
     try {
-      const ocrResult = await ocrApi.extractText(file);
+      // Upload image to Blob first, then call OCR with URL
+      const blobUrl = await blobApi.upload(file);
+      const ocrResult = await ocrApi.extractText(blobUrl);
       const extractedText = ocrResult.text;
 
       if (!extractedText) {

@@ -141,9 +141,20 @@ def _call_audio_analysis(audio_url: str, api_key: str, base_url: str) -> dict:
             raise Exception(f"Xiaomi Audio API error ({response.status_code}): {response.text}")
 
         result = response.json()
-        content = result["choices"][0]["message"]["content"]
-        logger.debug(f"Xiaomi raw response: {content[:200]}")
+        logger.debug(f"Xiaomi raw response: {result}")
 
+        # Check if response has valid content
+        choices = result.get("choices", [])
+        if not choices:
+            logger.warning("No choices in API response")
+            return {"tags": [], "summary": "", "scene": "", "emotion": "", "voice_style": "", "music": {"detected": False, "genre": "", "tempo": "", "instruments": [], "mood": ""}, "layers": [], "dialogue": {"detected": False, "speakers": [], "language": "", "content_summary": ""}}
+
+        content = choices[0].get("message", {}).get("content", "")
+        if not content:
+            logger.warning("Empty content in API response")
+            return {"tags": [], "summary": "", "scene": "", "emotion": "", "voice_style": "", "music": {"detected": False, "genre": "", "tempo": "", "instruments": [], "mood": ""}, "layers": [], "dialogue": {"detected": False, "speakers": [], "language": "", "content_summary": ""}}
+
+        logger.debug(f"Xiaomi content: {content[:200]}")
         return _parse_analysis_json(content)
 
 
