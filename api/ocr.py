@@ -60,7 +60,8 @@ def _call_xiaomi_ocr(image_data: bytes, api_key: str, base_url: str) -> dict:
     url = f"{base_url}/chat/completions"
     image_base64 = base64.b64encode(image_data).decode()
 
-    with httpx.Client(timeout=30.0) as client:
+    # Use longer timeout for large images (up to 120 seconds)
+    with httpx.Client(timeout=120.0) as client:
         response = client.post(
             url,
             headers={
@@ -75,7 +76,7 @@ def _call_xiaomi_ocr(image_data: bytes, api_key: str, base_url: str) -> dict:
                         "content": [
                             {
                                 "type": "text",
-                                "text": '请提取图片中的文字，并描述图片场景。返回格式：{"text": "提取的文字", "scene": "场景描述", "confidence": 0.95}'
+                                "text": '请提取图片中的文字，并描述图片场景。必须返回严格的JSON格式，不要添加任何其他文字：{"text": "提取的文字", "scene": "场景描述", "confidence": 0.95}'
                             },
                             {
                                 "type": "image_url",

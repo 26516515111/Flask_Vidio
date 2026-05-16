@@ -11,7 +11,9 @@ from logger import logger, log_api_call
 from blob_cleanup import delete_blob
 
 
-AUDIO_PROMPT = """请分析这个音频的内容。返回JSON格式：
+AUDIO_PROMPT = """请分析这个音频的内容。必须返回严格的JSON格式，不要添加任何其他文字、解释或markdown标记。
+
+返回格式：
 {
   "tags": ["标签1", "标签2"],
   "summary": "音频内容简介，50-100字",
@@ -42,8 +44,8 @@ AUDIO_PROMPT = """请分析这个音频的内容。返回JSON格式：
 }
 
 要求：
-1. tags 是你根据音频内容自动生成的分类标签，如：音乐、台词、背景音、音效、对话、旁白、环境音等
-2. summary 是音频内容的简洁描述
+1. tags 是你根据音频内容自动生成的分类标签，如：音乐、台词、背景音、音效、对话、旁白、环境音等，至少1个标签
+2. summary 是音频内容的简洁描述，必须填写
 3. scene 描述音频发生的场景
 4. emotion 是音频传达的主要情绪
 5. voice_style 是适合该音频的配音风格建议

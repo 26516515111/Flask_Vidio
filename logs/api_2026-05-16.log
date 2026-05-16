@@ -82,3 +82,16 @@
 [INFO] 2026-05-16 15:33:18 - logger:51 - API Call: {"endpoint": "/api/video", "timestamp": "2026-05-16T15:33:18.398498", "request": {"url": "https://lsi9tchulfhhv5fp.public.blob.vercel-storage.com/2f866541-%E7%9F%AD%E8%A7"}, "response": "{'tags': ['悬疑剧', '美剧', '预告片', '家庭', '失踪', '情感'], 'summary': '这是美剧《都是她的错》第一季的预告片段。视频开始时，母亲玛丽莎微笑着去接儿子迈洛，却被告知孩子并不在场。随即剧情急转直下，画外音透露孩子已失踪近五小时，画面展示了母亲崩溃痛哭的绝望场景以及相关人员严肃的谈话，充满了悬疑和悲伤的氛围。', 'characters': [{'role': '玛丽莎 (Marissa)', 'gender': '女', 'age': '中年', 'personality': '从自信期待转为绝望崩溃', 'voice_hint': '焦虑的女声'}, {'role': '年长女性', 'gender': '女', 'age': '老年', 'personality': '困惑', 'voice_hint': '惊讶的女声'}, {'role': '西装男', 'gender': '男', 'age': '中年', 'personality': '严肃、冷静', 'voice_hint': '低沉男声'}], 'scene': '郊区住宅门", "duration_ms": 30309.947967529297}
 [INFO] 2026-05-16 15:33:18 - video:126 - Video analysis completed in 30310ms, tags=['悬疑剧', '美剧', '预告片', '家庭', '失踪', '情感']
 [INFO] 2026-05-16 15:33:21 - blob_cleanup:48 - Blob cleaned up: https://lsi9tchulfhhv5fp.public.blob.vercel-storage.com/2f866541-%E7%9F%AD%E8%A7...
+[INFO] 2026-05-16 20:04:41 - ocr:16 - OCR request, content-type: multipart/form-data; boundary=----WebKitFormBounda
+[INFO] 2026-05-16 20:16:15 - blob_upload:15 - Blob upload requested, content-type: multipart/form-data; boundary=----WebKitFormBoundaryxMorSPgjhNdaNjDj
+[INFO] 2026-05-16 20:16:15 - blob_upload:50 - File parsed: VID_20260515_193544.mp4, size=16200261 bytes
+[INFO] 2026-05-16 20:16:27 - blob_upload:57 - Blob uploaded OK: https://lsi9tchulfhhv5fp.public.blob.vercel-storage.com/6de9d257-VID_20260515_193544-9uq16RrjcxvazdtP8L31wKfwElS4JT.mp4
+[INFO] 2026-05-16 20:16:27 - video:110 - Video analysis requested, URL: https://lsi9tchulfhhv5fp.public.blob.vercel-storage.com/6de9d257-VID_20260515_19..., duration=4.949333s, fps=2.0, resolution=default
+[DEBUG] 2026-05-16 20:16:43 - video:191 - Xiaomi raw response: {
+  "tags": ["晚会", "庆典", "大型活动", "大学周年庆"],
+  "summary": "视频展示了西安交通大学建校125周年的大型庆典晚会现场。巨大的舞台以红色为主色调，主屏幕上显示“1896”和“2026”字样，寓意学校悠久历史与未来展望。台下观众人头攒动，气氛热烈。",
+  "characters": [],
+  "scene": "西安交通大学户外体育场（或大型广场
+[INFO] 2026-05-16 20:16:43 - logger:57 - API Call: {"endpoint": "/api/video", "timestamp": "2026-05-16T20:16:43.603315", "request": {"url": "https://lsi9tchulfhhv5fp.public.blob.vercel-storage.com/6de9d257-VID_20260515_19"}, "response": "{'tags': ['晚会', '庆典', '大型活动', '大学周年庆'], 'summary': '视频展示了西安交通大学建校125周年的大型庆典晚会现场。巨大的舞台以红色为主色调，主屏幕上显示“1896”和“2026”字样，寓意学校悠久历史与未来展望。台下观众人头攒动，气氛热烈。', 'characters': [], 'scene': '西安交通大学户外体育场（或大型广场）的夜晚，正在举办建校125周年庆典晚会，氛围隆重、喜庆、热烈。', 'emotion': '激动/开心', 'voice_style': '激昂、富有感染力的晚会主持或庆典旁白', 'audio': {'detected': True, 'music': {'detected': True, 'genre': '流行/电子', 'tempo': '快', 'instruments': ['电子合成器', '鼓'], 'mood': '激昂/欢快'}, 'dialogue': {'detected': False, 'speakers': [], 'language': '中文', 'content_summa", "duration_ms": 16281.026840209961}
+[INFO] 2026-05-16 20:16:43 - video:128 - Video analysis completed in 16281ms, tags=['晚会', '庆典', '大型活动', '大学周年庆']
+[INFO] 2026-05-16 20:16:45 - blob_cleanup:48 - Blob cleaned up: https://lsi9tchulfhhv5fp.public.blob.vercel-storage.com/6de9d257-VID_20260515_19...
